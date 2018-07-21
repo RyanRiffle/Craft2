@@ -1,0 +1,7 @@
+
+tiles=1-4
+connect=block
+matchBlocks=47
+method=horizontal
+facesx=Sides
+

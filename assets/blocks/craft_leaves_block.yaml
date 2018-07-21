@@ -1,0 +1,4 @@
+textures:
+    all: "leaves_oak"
+colorize:
+    all: [72, 120, 63 , 0]

@@ -1,0 +1,7 @@
+textures:
+  top: "log_oak_top"
+  left: "log_oak"
+  right: "log_oak"
+  front: "log_oak"
+  back: "log_oak"
+  bottom: "log_oak_top"

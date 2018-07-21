@@ -1,0 +1,5 @@
+
+tiles=0-11 16-27 32-43 48-58
+connect=block
+matchBlocks=102
+method=ctm

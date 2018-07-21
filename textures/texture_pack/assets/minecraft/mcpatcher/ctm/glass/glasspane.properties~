@@ -1,0 +1,7 @@
+# Converted from /ctm.png and /ctm.png
+# Individual tiles are in /ctm/default
+#Sun Apr 28 18:14:59 CDT 2013
+tiles=0-11 16-27 32-43 48-58
+connect=block
+matchBlocks=102
+method=ctm

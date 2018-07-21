@@ -1,0 +1,10 @@
+textures:
+  top: "grass_top"
+  left: "grass_side"
+  right: "grass_side"
+  front: "grass_side"
+  back: "grass_side"
+  bottom: "dirt"
+colorize:
+ top: [72, 120, 63 , 0]
+ 

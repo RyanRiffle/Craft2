@@ -1,0 +1,8 @@
+
+tiles=1-4
+connect=block
+matchBlocks=24
+metadata=0
+method=vertical
+faces=Sides
+
