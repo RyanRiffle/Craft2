@@ -7,7 +7,59 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		94836BEF20F841ED00BB11D9 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94836BEE20F841ED00BB11D9 /* main.cpp */; };
+		94339381210431D000746210 /* matrix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339367210431CF00746210 /* matrix.cpp */; };
+		94339382210431D000746210 /* chunk.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339368210431CF00746210 /* chunk.cpp */; };
+		94339383210431D000746210 /* sign.c in Sources */ = {isa = PBXBuildFile; fileRef = 94339369210431CF00746210 /* sign.c */; };
+		94339384210431D000746210 /* auth.c in Sources */ = {isa = PBXBuildFile; fileRef = 9433936D210431CF00746210 /* auth.c */; };
+		94339385210431D000746210 /* map.c in Sources */ = {isa = PBXBuildFile; fileRef = 9433936E210431CF00746210 /* map.c */; };
+		94339386210431D000746210 /* ring.c in Sources */ = {isa = PBXBuildFile; fileRef = 9433936F210431CF00746210 /* ring.c */; };
+		94339387210431D000746210 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339371210431CF00746210 /* main.cpp */; };
+		94339388210431D000746210 /* cube.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339373210431CF00746210 /* cube.cpp */; };
+		94339389210431D000746210 /* db.c in Sources */ = {isa = PBXBuildFile; fileRef = 94339374210431CF00746210 /* db.c */; };
+		9433938A210431D000746210 /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339375210431CF00746210 /* util.cpp */; };
+		9433938B210431D000746210 /* world.c in Sources */ = {isa = PBXBuildFile; fileRef = 94339376210431CF00746210 /* world.c */; };
+		9433938C210431D000746210 /* time.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339379210431D000746210 /* time.cpp */; };
+		9433938D210431D000746210 /* item.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9433937A210431D000746210 /* item.cpp */; };
+		9433938E210431D000746210 /* client.c in Sources */ = {isa = PBXBuildFile; fileRef = 9433937B210431D000746210 /* client.c */; };
+		943393932104321E00746210 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 943393922104321E00746210 /* libGLEW.2.1.0.dylib */; };
+		943393952104322C00746210 /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 943393942104322B00746210 /* libglfw.3.2.dylib */; };
+		943393A82104341500746210 /* noise.c in Sources */ = {isa = PBXBuildFile; fileRef = 943393A62104341500746210 /* noise.c */; };
+		943393AA2104343000746210 /* libyaml-cpp.0.6.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 943393A92104343000746210 /* libyaml-cpp.0.6.2.dylib */; };
+		943393AC2104348100746210 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 943393AB2104348100746210 /* OpenGL.framework */; };
+		943393B0210434A800746210 /* lodepng.c in Sources */ = {isa = PBXBuildFile; fileRef = 943393AE210434A800746210 /* lodepng.c */; };
+		943393E12104365C00746210 /* CobblestoneBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393B42104365A00746210 /* CobblestoneBlock.cpp */; };
+		943393E22104365C00746210 /* WoodBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393B92104365A00746210 /* WoodBlock.cpp */; };
+		943393E32104365C00746210 /* WaterBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393BA2104365A00746210 /* WaterBlock.cpp */; };
+		943393E42104365C00746210 /* YellowFlowerPlant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393BD2104365A00746210 /* YellowFlowerPlant.cpp */; };
+		943393E52104365C00746210 /* AirBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393BE2104365A00746210 /* AirBlock.cpp */; };
+		943393E62104365C00746210 /* Block.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393C02104365A00746210 /* Block.cpp */; };
+		943393E72104365C00746210 /* DirtBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393C22104365A00746210 /* DirtBlock.cpp */; };
+		943393E82104365C00746210 /* PlanksBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393C32104365B00746210 /* PlanksBlock.cpp */; };
+		943393E92104365C00746210 /* LeavesBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393C42104365B00746210 /* LeavesBlock.cpp */; };
+		943393EA2104365C00746210 /* BlueFlowerPlant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393C82104365B00746210 /* BlueFlowerPlant.cpp */; };
+		943393EB2104365C00746210 /* BrickBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393C92104365B00746210 /* BrickBlock.cpp */; };
+		943393EC2104365C00746210 /* PurpleFlowerPlant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393CB2104365B00746210 /* PurpleFlowerPlant.cpp */; };
+		943393ED2104365C00746210 /* RedFlowerPlant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393CC2104365B00746210 /* RedFlowerPlant.cpp */; };
+		943393EE2104365C00746210 /* TallGrassPlant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393CF2104365B00746210 /* TallGrassPlant.cpp */; };
+		943393EF2104365C00746210 /* Plant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393D02104365B00746210 /* Plant.cpp */; };
+		943393F02104365C00746210 /* WhiteFlowerPlant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393D12104365B00746210 /* WhiteFlowerPlant.cpp */; };
+		943393F12104365C00746210 /* CloudBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393D52104365C00746210 /* CloudBlock.cpp */; };
+		943393F22104365C00746210 /* SunFlowerPlant.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393D62104365C00746210 /* SunFlowerPlant.cpp */; };
+		943393F32104365C00746210 /* ChestBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393D72104365C00746210 /* ChestBlock.cpp */; };
+		943393F42104365C00746210 /* GlassBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393D82104365C00746210 /* GlassBlock.cpp */; };
+		943393F52104365C00746210 /* SandBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393DD2104365C00746210 /* SandBlock.cpp */; };
+		943393F62104365C00746210 /* GrassBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393DE2104365C00746210 /* GrassBlock.cpp */; };
+		943393F72104365C00746210 /* StoneBlock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393E02104365C00746210 /* StoneBlock.cpp */; };
+		943394022104368C00746210 /* Model.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393FB2104368C00746210 /* Model.cpp */; };
+		943394032104368C00746210 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943393FC2104368C00746210 /* Mesh.cpp */; };
+		943394042104368C00746210 /* atlasgenerator.c in Sources */ = {isa = PBXBuildFile; fileRef = 943393FD2104368C00746210 /* atlasgenerator.c */; };
+		943394052104368C00746210 /* TextureImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943394012104368C00746210 /* TextureImporter.cpp */; };
+		94339409210436A100746210 /* Worm.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339408210436A100746210 /* Worm.cpp */; };
+		9433940D210436BE00746210 /* tinycthread.c in Sources */ = {isa = PBXBuildFile; fileRef = 9433940B210436BD00746210 /* tinycthread.c */; };
+		9433940F210436F400746210 /* libassimp.4.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 9433940E210436F400746210 /* libassimp.4.1.0.dylib */; };
+		943394112104372F00746210 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 943394102104372F00746210 /* libcurl.tbd */; };
+		943394182104375500746210 /* Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943394132104375500746210 /* Drawing.cpp */; };
+		943394192104375500746210 /* Renderable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943394152104375500746210 /* Renderable.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,8 +75,123 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		94339364210431CF00746210 /* chunk.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = chunk.h; path = src/chunk.h; sourceTree = "<group>"; };
+		94339365210431CF00746210 /* client.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = client.h; path = src/client.h; sourceTree = "<group>"; };
+		94339366210431CF00746210 /* sign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sign.h; path = src/sign.h; sourceTree = "<group>"; };
+		94339367210431CF00746210 /* matrix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = matrix.cpp; path = src/matrix.cpp; sourceTree = "<group>"; };
+		94339368210431CF00746210 /* chunk.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = chunk.cpp; path = src/chunk.cpp; sourceTree = "<group>"; };
+		94339369210431CF00746210 /* sign.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sign.c; path = src/sign.c; sourceTree = "<group>"; };
+		9433936A210431CF00746210 /* global.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = global.h; path = src/global.h; sourceTree = "<group>"; };
+		9433936B210431CF00746210 /* cube.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = cube.h; path = src/cube.h; sourceTree = "<group>"; };
+		9433936C210431CF00746210 /* item.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = item.h; path = src/item.h; sourceTree = "<group>"; };
+		9433936D210431CF00746210 /* auth.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = auth.c; path = src/auth.c; sourceTree = "<group>"; };
+		9433936E210431CF00746210 /* map.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = map.c; path = src/map.c; sourceTree = "<group>"; };
+		9433936F210431CF00746210 /* ring.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ring.c; path = src/ring.c; sourceTree = "<group>"; };
+		94339370210431CF00746210 /* ring.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ring.h; path = src/ring.h; sourceTree = "<group>"; };
+		94339371210431CF00746210 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = main.cpp; path = src/main.cpp; sourceTree = "<group>"; };
+		94339372210431CF00746210 /* config.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = config.h; path = src/config.h; sourceTree = "<group>"; };
+		94339373210431CF00746210 /* cube.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = cube.cpp; path = src/cube.cpp; sourceTree = "<group>"; };
+		94339374210431CF00746210 /* db.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = db.c; path = src/db.c; sourceTree = "<group>"; };
+		94339375210431CF00746210 /* util.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = util.cpp; path = src/util.cpp; sourceTree = "<group>"; };
+		94339376210431CF00746210 /* world.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = world.c; path = src/world.c; sourceTree = "<group>"; };
+		94339377210431D000746210 /* util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = util.h; path = src/util.h; sourceTree = "<group>"; };
+		94339378210431D000746210 /* matrix.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = matrix.h; path = src/matrix.h; sourceTree = "<group>"; };
+		94339379210431D000746210 /* time.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = time.cpp; path = src/time.cpp; sourceTree = "<group>"; };
+		9433937A210431D000746210 /* item.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = item.cpp; path = src/item.cpp; sourceTree = "<group>"; };
+		9433937B210431D000746210 /* client.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = client.c; path = src/client.c; sourceTree = "<group>"; };
+		9433937C210431D000746210 /* map.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = map.h; path = src/map.h; sourceTree = "<group>"; };
+		9433937D210431D000746210 /* time.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = time.h; path = src/time.h; sourceTree = "<group>"; };
+		9433937E210431D000746210 /* auth.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = auth.h; path = src/auth.h; sourceTree = "<group>"; };
+		9433937F210431D000746210 /* db.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = db.h; path = src/db.h; sourceTree = "<group>"; };
+		94339380210431D000746210 /* world.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = world.h; path = src/world.h; sourceTree = "<group>"; };
+		943393922104321E00746210 /* libGLEW.2.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libGLEW.2.1.0.dylib; path = ../../../../../usr/local/Cellar/glew/2.1.0/lib/libGLEW.2.1.0.dylib; sourceTree = "<group>"; };
+		943393942104322B00746210 /* libglfw.3.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libglfw.3.2.dylib; path = ../../../../../usr/local/Cellar/glfw/3.2.1/lib/libglfw.3.2.dylib; sourceTree = "<group>"; };
+		943393972104333700746210 /* sky_fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sky_fragment.glsl; path = shaders/sky_fragment.glsl; sourceTree = "<group>"; };
+		943393982104333700746210 /* model_vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = model_vertex.glsl; path = shaders/model_vertex.glsl; sourceTree = "<group>"; };
+		943393992104333700746210 /* block_vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = block_vertex.glsl; path = shaders/block_vertex.glsl; sourceTree = "<group>"; };
+		9433939A2104333700746210 /* text_fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = text_fragment.glsl; path = shaders/text_fragment.glsl; sourceTree = "<group>"; };
+		9433939B2104333700746210 /* line_fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = line_fragment.glsl; path = shaders/line_fragment.glsl; sourceTree = "<group>"; };
+		9433939C2104333700746210 /* line_vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = line_vertex.glsl; path = shaders/line_vertex.glsl; sourceTree = "<group>"; };
+		9433939D2104333700746210 /* block_fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = block_fragment.glsl; path = shaders/block_fragment.glsl; sourceTree = "<group>"; };
+		9433939E2104333700746210 /* model_fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = model_fragment.glsl; path = shaders/model_fragment.glsl; sourceTree = "<group>"; };
+		9433939F2104333700746210 /* text_vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = text_vertex.glsl; path = shaders/text_vertex.glsl; sourceTree = "<group>"; };
+		943393A02104333700746210 /* sky_vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = sky_vertex.glsl; path = shaders/sky_vertex.glsl; sourceTree = "<group>"; };
+		943393A22104335900746210 /* blocks */ = {isa = PBXFileReference; lastKnownFileType = folder; name = blocks; path = assets/blocks; sourceTree = "<group>"; };
+		943393A32104335900746210 /* models */ = {isa = PBXFileReference; lastKnownFileType = folder; name = models; path = assets/models; sourceTree = "<group>"; };
+		943393A62104341500746210 /* noise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = noise.c; path = deps/noise/noise.c; sourceTree = "<group>"; };
+		943393A72104341500746210 /* noise.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = noise.h; path = deps/noise/noise.h; sourceTree = "<group>"; };
+		943393A92104343000746210 /* libyaml-cpp.0.6.2.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libyaml-cpp.0.6.2.dylib"; path = "../../../../../usr/local/Cellar/yaml-cpp/0.6.2/lib/libyaml-cpp.0.6.2.dylib"; sourceTree = "<group>"; };
+		943393AB2104348100746210 /* OpenGL.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGL.framework; path = System/Library/Frameworks/OpenGL.framework; sourceTree = SDKROOT; };
+		943393AE210434A800746210 /* lodepng.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = lodepng.c; path = deps/lodepng/lodepng.c; sourceTree = "<group>"; };
+		943393AF210434A800746210 /* lodepng.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = lodepng.h; path = deps/lodepng/lodepng.h; sourceTree = "<group>"; };
+		943393B22104365A00746210 /* WhiteFlowerPlant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WhiteFlowerPlant.hpp; path = src/Blocks/WhiteFlowerPlant.hpp; sourceTree = "<group>"; };
+		943393B32104365A00746210 /* Plant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Plant.hpp; path = src/Blocks/Plant.hpp; sourceTree = "<group>"; };
+		943393B42104365A00746210 /* CobblestoneBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CobblestoneBlock.cpp; path = src/Blocks/CobblestoneBlock.cpp; sourceTree = "<group>"; };
+		943393B52104365A00746210 /* SandBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SandBlock.hpp; path = src/Blocks/SandBlock.hpp; sourceTree = "<group>"; };
+		943393B62104365A00746210 /* InitBlocks.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InitBlocks.h; path = src/Blocks/InitBlocks.h; sourceTree = "<group>"; };
+		943393B72104365A00746210 /* StoneBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = StoneBlock.hpp; path = src/Blocks/StoneBlock.hpp; sourceTree = "<group>"; };
+		943393B82104365A00746210 /* SunFlowerPlant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = SunFlowerPlant.hpp; path = src/Blocks/SunFlowerPlant.hpp; sourceTree = "<group>"; };
+		943393B92104365A00746210 /* WoodBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WoodBlock.cpp; path = src/Blocks/WoodBlock.cpp; sourceTree = "<group>"; };
+		943393BA2104365A00746210 /* WaterBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WaterBlock.cpp; path = src/Blocks/WaterBlock.cpp; sourceTree = "<group>"; };
+		943393BB2104365A00746210 /* ChestBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ChestBlock.hpp; path = src/Blocks/ChestBlock.hpp; sourceTree = "<group>"; };
+		943393BC2104365A00746210 /* WoodBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WoodBlock.hpp; path = src/Blocks/WoodBlock.hpp; sourceTree = "<group>"; };
+		943393BD2104365A00746210 /* YellowFlowerPlant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = YellowFlowerPlant.cpp; path = src/Blocks/YellowFlowerPlant.cpp; sourceTree = "<group>"; };
+		943393BE2104365A00746210 /* AirBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = AirBlock.cpp; path = src/Blocks/AirBlock.cpp; sourceTree = "<group>"; };
+		943393BF2104365A00746210 /* GlassBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GlassBlock.hpp; path = src/Blocks/GlassBlock.hpp; sourceTree = "<group>"; };
+		943393C02104365A00746210 /* Block.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Block.cpp; path = src/Blocks/Block.cpp; sourceTree = "<group>"; };
+		943393C12104365A00746210 /* BlueFlowerPlant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BlueFlowerPlant.hpp; path = src/Blocks/BlueFlowerPlant.hpp; sourceTree = "<group>"; };
+		943393C22104365A00746210 /* DirtBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = DirtBlock.cpp; path = src/Blocks/DirtBlock.cpp; sourceTree = "<group>"; };
+		943393C32104365B00746210 /* PlanksBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PlanksBlock.cpp; path = src/Blocks/PlanksBlock.cpp; sourceTree = "<group>"; };
+		943393C42104365B00746210 /* LeavesBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = LeavesBlock.cpp; path = src/Blocks/LeavesBlock.cpp; sourceTree = "<group>"; };
+		943393C52104365B00746210 /* GrassBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = GrassBlock.hpp; path = src/Blocks/GrassBlock.hpp; sourceTree = "<group>"; };
+		943393C62104365B00746210 /* BrickBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = BrickBlock.hpp; path = src/Blocks/BrickBlock.hpp; sourceTree = "<group>"; };
+		943393C72104365B00746210 /* CobblestoneBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CobblestoneBlock.hpp; path = src/Blocks/CobblestoneBlock.hpp; sourceTree = "<group>"; };
+		943393C82104365B00746210 /* BlueFlowerPlant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BlueFlowerPlant.cpp; path = src/Blocks/BlueFlowerPlant.cpp; sourceTree = "<group>"; };
+		943393C92104365B00746210 /* BrickBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = BrickBlock.cpp; path = src/Blocks/BrickBlock.cpp; sourceTree = "<group>"; };
+		943393CA2104365B00746210 /* DirtBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = DirtBlock.hpp; path = src/Blocks/DirtBlock.hpp; sourceTree = "<group>"; };
+		943393CB2104365B00746210 /* PurpleFlowerPlant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = PurpleFlowerPlant.cpp; path = src/Blocks/PurpleFlowerPlant.cpp; sourceTree = "<group>"; };
+		943393CC2104365B00746210 /* RedFlowerPlant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = RedFlowerPlant.cpp; path = src/Blocks/RedFlowerPlant.cpp; sourceTree = "<group>"; };
+		943393CD2104365B00746210 /* RedFlowerPlant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = RedFlowerPlant.hpp; path = src/Blocks/RedFlowerPlant.hpp; sourceTree = "<group>"; };
+		943393CE2104365B00746210 /* PurpleFlowerPlant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PurpleFlowerPlant.hpp; path = src/Blocks/PurpleFlowerPlant.hpp; sourceTree = "<group>"; };
+		943393CF2104365B00746210 /* TallGrassPlant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TallGrassPlant.cpp; path = src/Blocks/TallGrassPlant.cpp; sourceTree = "<group>"; };
+		943393D02104365B00746210 /* Plant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Plant.cpp; path = src/Blocks/Plant.cpp; sourceTree = "<group>"; };
+		943393D12104365B00746210 /* WhiteFlowerPlant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = WhiteFlowerPlant.cpp; path = src/Blocks/WhiteFlowerPlant.cpp; sourceTree = "<group>"; };
+		943393D22104365B00746210 /* YellowFlowerPlant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = YellowFlowerPlant.hpp; path = src/Blocks/YellowFlowerPlant.hpp; sourceTree = "<group>"; };
+		943393D32104365B00746210 /* TallGrassPlant.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TallGrassPlant.hpp; path = src/Blocks/TallGrassPlant.hpp; sourceTree = "<group>"; };
+		943393D42104365B00746210 /* WaterBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = WaterBlock.hpp; path = src/Blocks/WaterBlock.hpp; sourceTree = "<group>"; };
+		943393D52104365C00746210 /* CloudBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = CloudBlock.cpp; path = src/Blocks/CloudBlock.cpp; sourceTree = "<group>"; };
+		943393D62104365C00746210 /* SunFlowerPlant.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SunFlowerPlant.cpp; path = src/Blocks/SunFlowerPlant.cpp; sourceTree = "<group>"; };
+		943393D72104365C00746210 /* ChestBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = ChestBlock.cpp; path = src/Blocks/ChestBlock.cpp; sourceTree = "<group>"; };
+		943393D82104365C00746210 /* GlassBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GlassBlock.cpp; path = src/Blocks/GlassBlock.cpp; sourceTree = "<group>"; };
+		943393D92104365C00746210 /* PlanksBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = PlanksBlock.hpp; path = src/Blocks/PlanksBlock.hpp; sourceTree = "<group>"; };
+		943393DA2104365C00746210 /* Block.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Block.hpp; path = src/Blocks/Block.hpp; sourceTree = "<group>"; };
+		943393DB2104365C00746210 /* LeavesBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = LeavesBlock.hpp; path = src/Blocks/LeavesBlock.hpp; sourceTree = "<group>"; };
+		943393DC2104365C00746210 /* AirBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = AirBlock.hpp; path = src/Blocks/AirBlock.hpp; sourceTree = "<group>"; };
+		943393DD2104365C00746210 /* SandBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = SandBlock.cpp; path = src/Blocks/SandBlock.cpp; sourceTree = "<group>"; };
+		943393DE2104365C00746210 /* GrassBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = GrassBlock.cpp; path = src/Blocks/GrassBlock.cpp; sourceTree = "<group>"; };
+		943393DF2104365C00746210 /* CloudBlock.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = CloudBlock.hpp; path = src/Blocks/CloudBlock.hpp; sourceTree = "<group>"; };
+		943393E02104365C00746210 /* StoneBlock.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = StoneBlock.cpp; path = src/Blocks/StoneBlock.cpp; sourceTree = "<group>"; };
+		943393F92104368C00746210 /* Mesh.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Mesh.hpp; path = src/Assets/Mesh.hpp; sourceTree = "<group>"; };
+		943393FA2104368C00746210 /* atlasgenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = atlasgenerator.h; path = src/Assets/atlasgenerator.h; sourceTree = "<group>"; };
+		943393FB2104368C00746210 /* Model.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Model.cpp; path = src/Assets/Model.cpp; sourceTree = "<group>"; };
+		943393FC2104368C00746210 /* Mesh.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Mesh.cpp; path = src/Assets/Mesh.cpp; sourceTree = "<group>"; };
+		943393FD2104368C00746210 /* atlasgenerator.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = atlasgenerator.c; path = src/Assets/atlasgenerator.c; sourceTree = "<group>"; };
+		943393FE2104368C00746210 /* Model.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Model.hpp; path = src/Assets/Model.hpp; sourceTree = "<group>"; };
+		943393FF2104368C00746210 /* TextureImporter.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = TextureImporter.hpp; path = src/Assets/TextureImporter.hpp; sourceTree = "<group>"; };
+		943394002104368C00746210 /* Shader.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Shader.hpp; path = src/Assets/Shader.hpp; sourceTree = "<group>"; };
+		943394012104368C00746210 /* TextureImporter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TextureImporter.cpp; path = src/Assets/TextureImporter.cpp; sourceTree = "<group>"; };
+		94339407210436A100746210 /* Worm.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Worm.hpp; path = src/World/Worm.hpp; sourceTree = "<group>"; };
+		94339408210436A100746210 /* Worm.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Worm.cpp; path = src/World/Worm.cpp; sourceTree = "<group>"; };
+		9433940B210436BD00746210 /* tinycthread.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = tinycthread.c; path = deps/tinycthread/tinycthread.c; sourceTree = "<group>"; };
+		9433940C210436BE00746210 /* tinycthread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = tinycthread.h; path = deps/tinycthread/tinycthread.h; sourceTree = "<group>"; };
+		9433940E210436F400746210 /* libassimp.4.1.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libassimp.4.1.0.dylib; path = ../../../../../usr/local/Cellar/assimp/4.1.0/lib/libassimp.4.1.0.dylib; sourceTree = "<group>"; };
+		943394102104372F00746210 /* libcurl.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libcurl.tbd; path = usr/lib/libcurl.tbd; sourceTree = SDKROOT; };
+		943394132104375500746210 /* Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Drawing.cpp; path = src/Render/Drawing.cpp; sourceTree = "<group>"; };
+		943394142104375500746210 /* Drawing.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Drawing.hpp; path = src/Render/Drawing.hpp; sourceTree = "<group>"; };
+		943394152104375500746210 /* Renderable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Renderable.cpp; path = src/Render/Renderable.cpp; sourceTree = "<group>"; };
+		943394162104375500746210 /* Renderable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Renderable.hpp; path = src/Render/Renderable.hpp; sourceTree = "<group>"; };
+		943394172104375500746210 /* ShaderAttributes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ShaderAttributes.hpp; path = src/Render/ShaderAttributes.hpp; sourceTree = "<group>"; };
 		94836BEB20F841ED00BB11D9 /* Craft2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Craft2; sourceTree = BUILT_PRODUCTS_DIR; };
-		94836BEE20F841ED00BB11D9 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -32,17 +199,234 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				943394112104372F00746210 /* libcurl.tbd in Frameworks */,
+				9433940F210436F400746210 /* libassimp.4.1.0.dylib in Frameworks */,
+				943393AC2104348100746210 /* OpenGL.framework in Frameworks */,
+				943393AA2104343000746210 /* libyaml-cpp.0.6.2.dylib in Frameworks */,
+				943393952104322C00746210 /* libglfw.3.2.dylib in Frameworks */,
+				943393932104321E00746210 /* libGLEW.2.1.0.dylib in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		94339363210431BA00746210 /* src */ = {
+			isa = PBXGroup;
+			children = (
+				9433936D210431CF00746210 /* auth.c */,
+				9433937B210431D000746210 /* client.c */,
+				94339374210431CF00746210 /* db.c */,
+				9433936E210431CF00746210 /* map.c */,
+				9433936F210431CF00746210 /* ring.c */,
+				94339369210431CF00746210 /* sign.c */,
+				94339376210431CF00746210 /* world.c */,
+				94339368210431CF00746210 /* chunk.cpp */,
+				94339373210431CF00746210 /* cube.cpp */,
+				9433937A210431D000746210 /* item.cpp */,
+				94339371210431CF00746210 /* main.cpp */,
+				94339367210431CF00746210 /* matrix.cpp */,
+				94339379210431D000746210 /* time.cpp */,
+				94339375210431CF00746210 /* util.cpp */,
+				9433937E210431D000746210 /* auth.h */,
+				94339364210431CF00746210 /* chunk.h */,
+				94339365210431CF00746210 /* client.h */,
+				94339372210431CF00746210 /* config.h */,
+				9433936B210431CF00746210 /* cube.h */,
+				9433937F210431D000746210 /* db.h */,
+				9433936A210431CF00746210 /* global.h */,
+				9433936C210431CF00746210 /* item.h */,
+				9433937C210431D000746210 /* map.h */,
+				94339378210431D000746210 /* matrix.h */,
+				94339370210431CF00746210 /* ring.h */,
+				94339366210431CF00746210 /* sign.h */,
+				9433937D210431D000746210 /* time.h */,
+				94339377210431D000746210 /* util.h */,
+				94339380210431D000746210 /* world.h */,
+				943393F82104368300746210 /* Assets */,
+				943393B12104364000746210 /* Blocks */,
+				943394122104374900746210 /* Render */,
+				943394062104369300746210 /* World */,
+			);
+			name = src;
+			sourceTree = "<group>";
+		};
+		943393912104321D00746210 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				943394102104372F00746210 /* libcurl.tbd */,
+				9433940E210436F400746210 /* libassimp.4.1.0.dylib */,
+				943393AB2104348100746210 /* OpenGL.framework */,
+				943393A92104343000746210 /* libyaml-cpp.0.6.2.dylib */,
+				943393942104322B00746210 /* libglfw.3.2.dylib */,
+				943393922104321E00746210 /* libGLEW.2.1.0.dylib */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		943393962104332300746210 /* shaders */ = {
+			isa = PBXGroup;
+			children = (
+				9433939D2104333700746210 /* block_fragment.glsl */,
+				943393992104333700746210 /* block_vertex.glsl */,
+				9433939B2104333700746210 /* line_fragment.glsl */,
+				9433939C2104333700746210 /* line_vertex.glsl */,
+				9433939E2104333700746210 /* model_fragment.glsl */,
+				943393982104333700746210 /* model_vertex.glsl */,
+				943393972104333700746210 /* sky_fragment.glsl */,
+				943393A02104333700746210 /* sky_vertex.glsl */,
+				9433939A2104333700746210 /* text_fragment.glsl */,
+				9433939F2104333700746210 /* text_vertex.glsl */,
+			);
+			name = shaders;
+			sourceTree = "<group>";
+		};
+		943393A12104334300746210 /* assets */ = {
+			isa = PBXGroup;
+			children = (
+				943393A22104335900746210 /* blocks */,
+				943393A32104335900746210 /* models */,
+			);
+			name = assets;
+			sourceTree = "<group>";
+		};
+		943393A42104340100746210 /* deps */ = {
+			isa = PBXGroup;
+			children = (
+				9433940A210436B100746210 /* tinycthread */,
+				943393AD2104349700746210 /* lodepng */,
+				943393A52104340700746210 /* noise */,
+			);
+			name = deps;
+			sourceTree = "<group>";
+		};
+		943393A52104340700746210 /* noise */ = {
+			isa = PBXGroup;
+			children = (
+				943393A62104341500746210 /* noise.c */,
+				943393A72104341500746210 /* noise.h */,
+			);
+			name = noise;
+			sourceTree = "<group>";
+		};
+		943393AD2104349700746210 /* lodepng */ = {
+			isa = PBXGroup;
+			children = (
+				943393AE210434A800746210 /* lodepng.c */,
+				943393AF210434A800746210 /* lodepng.h */,
+			);
+			name = lodepng;
+			sourceTree = "<group>";
+		};
+		943393B12104364000746210 /* Blocks */ = {
+			isa = PBXGroup;
+			children = (
+				943393BE2104365A00746210 /* AirBlock.cpp */,
+				943393DC2104365C00746210 /* AirBlock.hpp */,
+				943393C02104365A00746210 /* Block.cpp */,
+				943393DA2104365C00746210 /* Block.hpp */,
+				943393C82104365B00746210 /* BlueFlowerPlant.cpp */,
+				943393C12104365A00746210 /* BlueFlowerPlant.hpp */,
+				943393C92104365B00746210 /* BrickBlock.cpp */,
+				943393C62104365B00746210 /* BrickBlock.hpp */,
+				943393D72104365C00746210 /* ChestBlock.cpp */,
+				943393BB2104365A00746210 /* ChestBlock.hpp */,
+				943393D52104365C00746210 /* CloudBlock.cpp */,
+				943393DF2104365C00746210 /* CloudBlock.hpp */,
+				943393B42104365A00746210 /* CobblestoneBlock.cpp */,
+				943393C72104365B00746210 /* CobblestoneBlock.hpp */,
+				943393C22104365A00746210 /* DirtBlock.cpp */,
+				943393CA2104365B00746210 /* DirtBlock.hpp */,
+				943393D82104365C00746210 /* GlassBlock.cpp */,
+				943393BF2104365A00746210 /* GlassBlock.hpp */,
+				943393DE2104365C00746210 /* GrassBlock.cpp */,
+				943393C52104365B00746210 /* GrassBlock.hpp */,
+				943393B62104365A00746210 /* InitBlocks.h */,
+				943393C42104365B00746210 /* LeavesBlock.cpp */,
+				943393DB2104365C00746210 /* LeavesBlock.hpp */,
+				943393C32104365B00746210 /* PlanksBlock.cpp */,
+				943393D92104365C00746210 /* PlanksBlock.hpp */,
+				943393D02104365B00746210 /* Plant.cpp */,
+				943393B32104365A00746210 /* Plant.hpp */,
+				943393CB2104365B00746210 /* PurpleFlowerPlant.cpp */,
+				943393CE2104365B00746210 /* PurpleFlowerPlant.hpp */,
+				943393CC2104365B00746210 /* RedFlowerPlant.cpp */,
+				943393CD2104365B00746210 /* RedFlowerPlant.hpp */,
+				943393DD2104365C00746210 /* SandBlock.cpp */,
+				943393B52104365A00746210 /* SandBlock.hpp */,
+				943393E02104365C00746210 /* StoneBlock.cpp */,
+				943393B72104365A00746210 /* StoneBlock.hpp */,
+				943393D62104365C00746210 /* SunFlowerPlant.cpp */,
+				943393B82104365A00746210 /* SunFlowerPlant.hpp */,
+				943393CF2104365B00746210 /* TallGrassPlant.cpp */,
+				943393D32104365B00746210 /* TallGrassPlant.hpp */,
+				943393BA2104365A00746210 /* WaterBlock.cpp */,
+				943393D42104365B00746210 /* WaterBlock.hpp */,
+				943393D12104365B00746210 /* WhiteFlowerPlant.cpp */,
+				943393B22104365A00746210 /* WhiteFlowerPlant.hpp */,
+				943393B92104365A00746210 /* WoodBlock.cpp */,
+				943393BC2104365A00746210 /* WoodBlock.hpp */,
+				943393BD2104365A00746210 /* YellowFlowerPlant.cpp */,
+				943393D22104365B00746210 /* YellowFlowerPlant.hpp */,
+			);
+			name = Blocks;
+			sourceTree = "<group>";
+		};
+		943393F82104368300746210 /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				943393FD2104368C00746210 /* atlasgenerator.c */,
+				943393FA2104368C00746210 /* atlasgenerator.h */,
+				943393FC2104368C00746210 /* Mesh.cpp */,
+				943393F92104368C00746210 /* Mesh.hpp */,
+				943393FB2104368C00746210 /* Model.cpp */,
+				943393FE2104368C00746210 /* Model.hpp */,
+				943394002104368C00746210 /* Shader.hpp */,
+				943394012104368C00746210 /* TextureImporter.cpp */,
+				943393FF2104368C00746210 /* TextureImporter.hpp */,
+			);
+			name = Assets;
+			sourceTree = "<group>";
+		};
+		943394062104369300746210 /* World */ = {
+			isa = PBXGroup;
+			children = (
+				94339408210436A100746210 /* Worm.cpp */,
+				94339407210436A100746210 /* Worm.hpp */,
+			);
+			name = World;
+			sourceTree = "<group>";
+		};
+		9433940A210436B100746210 /* tinycthread */ = {
+			isa = PBXGroup;
+			children = (
+				9433940B210436BD00746210 /* tinycthread.c */,
+				9433940C210436BE00746210 /* tinycthread.h */,
+			);
+			name = tinycthread;
+			sourceTree = "<group>";
+		};
+		943394122104374900746210 /* Render */ = {
+			isa = PBXGroup;
+			children = (
+				943394132104375500746210 /* Drawing.cpp */,
+				943394142104375500746210 /* Drawing.hpp */,
+				943394152104375500746210 /* Renderable.cpp */,
+				943394162104375500746210 /* Renderable.hpp */,
+				943394172104375500746210 /* ShaderAttributes.hpp */,
+			);
+			name = Render;
+			sourceTree = "<group>";
+		};
 		94836BE220F841ED00BB11D9 = {
 			isa = PBXGroup;
 			children = (
-				94836BED20F841ED00BB11D9 /* Craft2 */,
+				943393A12104334300746210 /* assets */,
+				943393A42104340100746210 /* deps */,
+				943393912104321D00746210 /* Frameworks */,
 				94836BEC20F841ED00BB11D9 /* Products */,
+				943393962104332300746210 /* shaders */,
+				94339363210431BA00746210 /* src */,
 			);
 			sourceTree = "<group>";
 		};
@@ -52,14 +436,6 @@
 				94836BEB20F841ED00BB11D9 /* Craft2 */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		94836BED20F841ED00BB11D9 /* Craft2 */ = {
-			isa = PBXGroup;
-			children = (
-				94836BEE20F841ED00BB11D9 /* main.cpp */,
-			);
-			path = Craft2;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -118,7 +494,53 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				94836BEF20F841ED00BB11D9 /* main.cpp in Sources */,
+				943393E42104365C00746210 /* YellowFlowerPlant.cpp in Sources */,
+				943393F22104365C00746210 /* SunFlowerPlant.cpp in Sources */,
+				94339388210431D000746210 /* cube.cpp in Sources */,
+				943393E32104365C00746210 /* WaterBlock.cpp in Sources */,
+				94339381210431D000746210 /* matrix.cpp in Sources */,
+				943393E82104365C00746210 /* PlanksBlock.cpp in Sources */,
+				9433938B210431D000746210 /* world.c in Sources */,
+				943393EA2104365C00746210 /* BlueFlowerPlant.cpp in Sources */,
+				943393B0210434A800746210 /* lodepng.c in Sources */,
+				943393ED2104365C00746210 /* RedFlowerPlant.cpp in Sources */,
+				943393F62104365C00746210 /* GrassBlock.cpp in Sources */,
+				943393F72104365C00746210 /* StoneBlock.cpp in Sources */,
+				943393EE2104365C00746210 /* TallGrassPlant.cpp in Sources */,
+				943393EC2104365C00746210 /* PurpleFlowerPlant.cpp in Sources */,
+				943393A82104341500746210 /* noise.c in Sources */,
+				943394042104368C00746210 /* atlasgenerator.c in Sources */,
+				943394182104375500746210 /* Drawing.cpp in Sources */,
+				94339384210431D000746210 /* auth.c in Sources */,
+				9433938D210431D000746210 /* item.cpp in Sources */,
+				94339409210436A100746210 /* Worm.cpp in Sources */,
+				943393E62104365C00746210 /* Block.cpp in Sources */,
+				943393E72104365C00746210 /* DirtBlock.cpp in Sources */,
+				9433938A210431D000746210 /* util.cpp in Sources */,
+				943393E92104365C00746210 /* LeavesBlock.cpp in Sources */,
+				943393F32104365C00746210 /* ChestBlock.cpp in Sources */,
+				943393E52104365C00746210 /* AirBlock.cpp in Sources */,
+				943393E12104365C00746210 /* CobblestoneBlock.cpp in Sources */,
+				943393F02104365C00746210 /* WhiteFlowerPlant.cpp in Sources */,
+				94339389210431D000746210 /* db.c in Sources */,
+				943393F52104365C00746210 /* SandBlock.cpp in Sources */,
+				943394022104368C00746210 /* Model.cpp in Sources */,
+				943393F42104365C00746210 /* GlassBlock.cpp in Sources */,
+				94339385210431D000746210 /* map.c in Sources */,
+				943393F12104365C00746210 /* CloudBlock.cpp in Sources */,
+				9433940D210436BE00746210 /* tinycthread.c in Sources */,
+				9433938E210431D000746210 /* client.c in Sources */,
+				94339383210431D000746210 /* sign.c in Sources */,
+				943394032104368C00746210 /* Mesh.cpp in Sources */,
+				9433938C210431D000746210 /* time.cpp in Sources */,
+				943393E22104365C00746210 /* WoodBlock.cpp in Sources */,
+				94339387210431D000746210 /* main.cpp in Sources */,
+				943393EB2104365C00746210 /* BrickBlock.cpp in Sources */,
+				943394052104368C00746210 /* TextureImporter.cpp in Sources */,
+				943393EF2104365C00746210 /* Plant.cpp in Sources */,
+				94339382210431D000746210 /* chunk.cpp in Sources */,
+				943394192104375500746210 /* Renderable.cpp in Sources */,
+				94339386210431D000746210 /* ring.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -180,6 +602,7 @@
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = /usr/local/include;
 			};
 			name = Debug;
 		};
@@ -231,6 +654,7 @@
 				MACOSX_DEPLOYMENT_TARGET = 10.13;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = macosx;
+				SYSTEM_HEADER_SEARCH_PATHS = /usr/local/include;
 			};
 			name = Release;
 		};
@@ -238,6 +662,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glew/2.1.0/lib,
+					/usr/local/Cellar/glfw/3.2.1/lib,
+					"/usr/local/Cellar/yaml-cpp/0.6.2/lib",
+					/usr/local/Cellar/assimp/4.1.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -246,6 +677,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glew/2.1.0/lib,
+					/usr/local/Cellar/glfw/3.2.1/lib,
+					"/usr/local/Cellar/yaml-cpp/0.6.2/lib",
+					/usr/local/Cellar/assimp/4.1.0/lib,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;
