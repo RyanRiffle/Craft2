@@ -1097,6 +1097,11 @@ void check_workers() {
     }
 }
 
+/*!
+ * @discussion Forces chunks around the player to be generated in a 3x3 grid.
+ * With the player in the center.
+ * @param player The player to generate chunks around
+ */
 void force_chunks(Player *player) {
     State *s = &player->state;
     int p = chunked(s->x);
@@ -1116,7 +1121,19 @@ void force_chunks(Player *player) {
                 chunk = g->chunks + g->chunk_count++;
                 chunk->initialize(a, b);
                 create_chunk(chunk, chunk->getChunkPosition().x, chunk->getChunkPosition().z);
-                gen_chunk_buffer(chunk);
+            }
+        }
+    }
+    
+    for (int dp = -r; dp <= r; dp++) {
+        for (int dq = -r; dq <= r; dq++) {
+            int a = p + dp;
+            int b = q + dq;
+            Chunk *chunk = Chunk::findChunk(a, b);
+            if (chunk) {
+                if (chunk->isDirty()) {
+                    gen_chunk_buffer(chunk);
+                }
             }
         }
     }
