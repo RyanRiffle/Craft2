@@ -5,7 +5,7 @@
 #include <GLFW/glfw3.h>
 #include "config.h"
 
-#define PI 3.14159265359
+#define PI 3.14159265359f
 #define DEGREES(radians) ((radians) * 180 / PI)
 #define RADIANS(degrees) ((degrees) * PI / 180)
 #define ABS(x) ((x) < 0 ? (-(x)) : (x))
@@ -14,7 +14,7 @@
 #define SIGN(x) (((x) > 0) - ((x) < 0))
 
 #if DEBUG
-    #define LOG(...) printf(__VA_ARGS__)
+    #define LOG(...) printf(__VA_ARGS__) 
 #else
     #define LOG(...)
 #endif

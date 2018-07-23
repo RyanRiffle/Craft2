@@ -7,35 +7,10 @@
 #define TRUE 1
 #define FALSE 0
 #define PIXEL_SIZE 4
-#define IMG_W 16 * PIXEL_SIZE
-#define IMG_H 16 * PIXEL_SIZE
-#define IMG_H_PX (16)
-#define IMG_W_PX (16)
-#define ATLAS_W 256 * PIXEL_SIZE
-#define ATLAS_H 256 * PIXEL_SIZE
-#define ATLAS_W_PX (256)
-#define ATALAS_H_PX (256)
-#define toLocal2d(x,y) (y * IMG_W + x)
-#define toAtlas2d(x,y) (y * ATLAS_W + x)
-#define toAtlas2dPX(x, y) (y * 256 + x)
-
-void flip_image_vertical2(
-                         unsigned char *data, unsigned int width, unsigned int height)
-{
-    unsigned int size = width * height * 4;
-    unsigned int stride = sizeof(char) * width * 4;
-    unsigned char *new_data = malloc(sizeof(unsigned char) * size);
-    for (unsigned int i = 0; i < height; i++) {
-        unsigned int j = height - i - 1;
-        memcpy(new_data + j * stride, data + i * stride, stride);
-    }
-    memcpy(data, new_data, size);
-    free(data);
-}
 
 int blend_color(float a, float b, float t)
 {
-    return sqrt((1-t) * pow(a, 2) + t * pow(b, 2));
+    return sqrtf((1-t) * powf(a, 2) + t * powf(b, 2));
 }
 
 Atlas *atlas_create()
@@ -54,7 +29,7 @@ Atlas *atlas_create()
 
 void atlas_free(Atlas* atlas)
 {
-  for(int x = 0; x < atlas->path_index; x++) {
+  for(unsigned int x = 0; x < atlas->path_index; x++) {
     //Free each AtlasImage
     if (atlas->images[x]->data != NULL)
       free(atlas->images[x]->data);
@@ -154,7 +129,7 @@ int atlas_addImageColorize(Atlas *atlas, const char *path, unsigned char r,
 
 int load_images(Atlas *atlas)
 {
-  for(int x = 0; x < atlas->path_index; x++) {
+  for(unsigned int x = 0; x < atlas->path_index; x++) {
     unsigned error, width, height;
     error = lodepng_decode32_file(&atlas->images[x]->data, &width, &height, atlas->images[x]->path);
     if (error) {
@@ -163,7 +138,7 @@ int load_images(Atlas *atlas)
     }
 
     //Colorize the image
-    for(int i = 0; i < (width * 4) * height; i++) {
+    for(unsigned int i = 0; i < (width * 4) * height; i++) {
       if (atlas->images[x]->r != 0 && i % 4 == 0) {
         //Red
           atlas->images[x]->data[i] = blend_color(atlas->images[x]->data[i], atlas->images[x]->r, 0.75f);//(atlas->images[x]->data[i] + atlas->images[x]->r) / 2;
@@ -195,7 +170,7 @@ void atlas_generate(Atlas *atlas, const char *path)
   unsigned image_size = 16 * PIXEL_SIZE;
   for(unsigned y = 0; y < 256; y++) {
     for (unsigned x = 0; x < row_width; x++) {
-      int img = ((y / 16) * 16) + x / image_size;
+      unsigned int img = ((y / 16) * 16) + x / image_size;
       if (img > atlas->path_index - 1) {
         break;
       }
@@ -206,12 +181,13 @@ void atlas_generate(Atlas *atlas, const char *path)
   }
 
   lodepng_encode32_file(path, output, 256, 256);
+    free(output);
 }
 
 
 int atlas_hasImage(Atlas *atlas, const char *path)
 {
-  for(int i = 0; i < atlas->path_index; i++) {
+  for(unsigned int i = 0; i < atlas->path_index; i++) {
     AtlasImage *img = atlas->images[i];
     if (strcmp(img->path, path) == 0) {
       printf("Found match: %s, %s\n", img->path, path);
@@ -231,7 +207,7 @@ int atlas_hasImage(Atlas *atlas, const char *path)
 */
 int atlas_hasImageColorized(Atlas *atlas, const char *path, unsigned char r, unsigned char g, unsigned char b, unsigned char a)
 {
-  for(int i = 0; i < atlas->path_index; i++) {
+  for(unsigned int i = 0; i < atlas->path_index; i++) {
     AtlasImage *img = atlas->images[i];
     if (strcmp(img->path, path) == 0) {
       if (img->r == r && img->g == g && img->b == b && img->a == a) {

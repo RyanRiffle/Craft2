@@ -34,7 +34,7 @@ Chunk::Chunk() :
     
 }
 
-Chunk::Chunk(int chunkX, int chunkZ) :
+Chunk::Chunk(int, int) :
     m_isSetup(false)
 {
     //initialize(chunkX, chunkZ);
@@ -237,20 +237,27 @@ int Chunk::bufferSize()
     return static_cast<int>(gAllChunks.max_size());
 }
 
-void Chunk::destroy(std::list<Chunk*> *chunks)
+void Chunk::destroy(Chunk *chunk)
 {
-    for (auto git = chunks->begin(); git != chunks->end(); ++git) {
-        Chunk *chunk = (*git);
-        
-        map_free(chunk->getBlockMap());
-        map_free(chunk->getLightMap());
-        sign_list_free(&chunk->signs);
-        del_buffer(chunk->buffer);
-        del_buffer(chunk->sign_buffer);
-        
-        Chunk *other = g->chunks + (--g->chunk_count);
-        *chunk = *other;
-    }
+    map_free(chunk->getBlockMap());
+    map_free(chunk->getLightMap());
+    sign_list_free(&chunk->signs);
+    del_buffer(chunk->buffer);
+    del_buffer(chunk->sign_buffer);
+    
+    Chunk *other = g->chunks + (--g->chunk_count);
+    chunk->map = other->map;
+    chunk->signs = other->signs;
+    chunk->lights = other->lights;
+    chunk->m_isDirty = other->m_isDirty;
+    chunk->m_maxy = other->m_maxy;
+    chunk->m_miny = other->m_miny;
+    chunk->m_chunkPosition = other->m_chunkPosition;
+    chunk->m_isSetup = other->m_isSetup;
+    chunk->faces = other->faces;
+    chunk->buffer = other->buffer;
+    chunk->sign_faces = other->sign_faces;
+    chunk->sign_buffer = other->sign_buffer;
 }
 
 void Chunk::destroyAll()
@@ -258,12 +265,28 @@ void Chunk::destroyAll()
     std::list<Chunk*> chunks;
     for (int i = 0; i < g->chunk_count; i++) {
         Chunk *chunk = g->chunks + i;
-        chunks.push_back(chunk);
+        Chunk::destroy(chunk);
     }
     
-    destroy(&chunks);
 }
 
+Chunk &Chunk::operator=(const Chunk &rs)
+{
+    this->map = rs.map;
+    this->signs = rs.signs;
+    this->lights = rs.lights;
+    this->m_isDirty = rs.m_isDirty;
+    this->m_maxy = rs.m_maxy;
+    this->m_miny = rs.m_miny;
+    this->m_chunkPosition = rs.m_chunkPosition;
+    this->m_isSetup = rs.m_isSetup;
+    this->faces = rs.faces;
+    this->buffer = rs.buffer;
+    this->sign_faces = rs.sign_faces;
+    this->sign_buffer = rs.sign_buffer;
+    
+    return *this;
+}
 
 
 

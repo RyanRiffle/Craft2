@@ -150,7 +150,7 @@ void mat_frustum(
     float top, float znear, float zfar)
 {
     float temp, temp2, temp3, temp4;
-    temp = 2.0 * znear;
+    temp = 2.0f * znear;
     temp2 = right - left;
     temp3 = top - bottom;
     temp4 = zfar - znear;
@@ -177,7 +177,7 @@ void mat_perspective(
     float znear, float zfar)
 {
     float ymax, xmax;
-    ymax = znear * tanf(fov * PI / 360.0);
+    ymax = znear * tanf(fov * PI / 360.0f);
     xmax = ymax * aspect;
     mat_frustum(matrix, -xmax, xmax, -ymax, ymax, znear, zfar);
 }
@@ -215,7 +215,7 @@ void set_matrix_3d(
 {
     float a[16];
     float b[16];
-    float aspect = (float)width / height;
+    float aspect = static_cast<float>(width) / height;
     float znear = 0.125;
     float zfar = radius * 32 + 64;
     mat_identity(a);
@@ -240,7 +240,7 @@ void set_matrix_3d(
 void set_matrix_item(float *matrix, int width, int height, int scale) {
     float a[16];
     float b[16];
-    float aspect = (float)width / height;
+    float aspect = static_cast<float>(width) / height;
     float size = 64 * scale;
     float box = height / size / 2;
     float xoffset = 1 - size / width * 2;

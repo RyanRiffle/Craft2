@@ -39,4 +39,7 @@ int GrassBlock::stackSize()
     return 64;
 }
 
-
+bool GrassBlock::onPlace()
+{
+    return false;
+}

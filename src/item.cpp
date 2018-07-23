@@ -163,10 +163,10 @@ int is_obstacle(int w) {
         return 0;
     }
     
-    //try {
-        Block *block = (*GlobalBlockMap)[w];
+    try {
+        Block *block = GlobalBlockMap->at(w);
         return block->isObstacle();
-    //} catch (std::out_of_range &err) {}
+    } catch (std::out_of_range &err) {}
     
     
     switch (w) {

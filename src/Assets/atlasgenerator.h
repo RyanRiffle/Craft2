@@ -1,5 +1,5 @@
-#ifndef __ATLASGENERATOR_H
-#define __ATLASGENERATOR_H
+#ifndef ATLASGENERATOR_H
+#define ATLASGENERATOR_H
 
 #ifdef __cplusplus
 extern "C" {
@@ -17,8 +17,8 @@ typedef struct {
 } AtlasImage;
 
 typedef struct {
+  unsigned int path_index;
   AtlasImage **images;
-  unsigned char path_index;
 } Atlas;
 
 Atlas *atlas_create(void);

@@ -167,10 +167,10 @@ void draw_item(ShaderAttributes *attrib, GLuint buffer, int count) {
     draw_triangles_3d_ao(attrib, buffer, count);
 }
 
-void draw_text(ShaderAttributes *attrib, GLuint buffer, int length) {
+void draw_text(ShaderAttributes *attrib, GLuint buffer, size_t length) {
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    draw_triangles_2d(attrib, buffer, length * 6);
+    draw_triangles_2d(attrib, buffer, static_cast<int>(length) * 6);
     glDisable(GL_BLEND);
 }
 
@@ -656,7 +656,7 @@ void gen_sign_buffer(Chunk *chunk) {
 
     // first pass - count characters
     int max_faces = 0;
-    for (int i = 0; i < signs->size; i++) {
+    for (unsigned int i = 0; i < signs->size; i++) {
         Sign *e = signs->data + i;
         max_faces += strlen(e->text);
     }
@@ -664,7 +664,7 @@ void gen_sign_buffer(Chunk *chunk) {
     // second pass - generate geometry
     GLfloat *data = malloc_faces(5, max_faces);
     int faces = 0;
-    for (int i = 0; i < signs->size; i++) {
+    for (unsigned int i = 0; i < signs->size; i++) {
         Sign *e = signs->data + i;
         faces += _gen_sign_buffer(
             data + faces * 30, e->x, e->y, e->z, e->face, e->text);
@@ -1047,12 +1047,10 @@ void delete_chunks() {
         }
         if (del) {
             //it = Chunk::destroy(chunk);
-            removeChunks.push_back(chunk);
+            Chunk::destroy(chunk);
+            
         }
     }
-    
-    if (removeChunks.size() != 0)
-        Chunk::destroy(&removeChunks);
 }
 
 void delete_all_chunks() {
@@ -1605,7 +1603,7 @@ void render_text(
     glUniformMatrix4fv(attrib->matrix, 1, GL_FALSE, matrix);
     glUniform1i(attrib->sampler, 1);
     glUniform1i(attrib->extra1, 0);
-    int length = strlen(text);
+    size_t length = strlen(text);
     x -= n * justify * (length - 1) / 2;
     GLuint buffer = gen_text_buffer(x, y, n, text);
     draw_text(attrib, buffer, length);
@@ -1999,7 +1997,7 @@ void on_middle_click() {
     }
 }
 
-void on_key(GLFWwindow *window, int key, int scancode, int action, int mods) {
+void on_key(GLFWwindow *window, int key, int, int action, int mods) {
     int control = mods & (GLFW_MOD_CONTROL | GLFW_MOD_SUPER);
     int exclusive =
         glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
@@ -2008,7 +2006,7 @@ void on_key(GLFWwindow *window, int key, int scancode, int action, int mods) {
     }
     if (key == GLFW_KEY_BACKSPACE) {
         if (g->typing) {
-            int n = strlen(g->typing_buffer);
+            size_t n = strlen(g->typing_buffer);
             if (n > 0) {
                 g->typing_buffer[n - 1] = '\0';
             }
@@ -2028,7 +2026,7 @@ void on_key(GLFWwindow *window, int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_ENTER) {
         if (g->typing) {
             if (mods & GLFW_MOD_SHIFT) {
-                int n = strlen(g->typing_buffer);
+                size_t n = strlen(g->typing_buffer);
                 if (n < MAX_TEXT_LENGTH - 1) {
                     g->typing_buffer[n] = '\r';
                     g->typing_buffer[n + 1] = '\0';
@@ -2099,7 +2097,7 @@ void on_key(GLFWwindow *window, int key, int scancode, int action, int mods) {
     }
 }
 
-void on_char(GLFWwindow *window, unsigned int u) {
+void on_char(GLFWwindow *, unsigned int u) {
     if (g->suppress_char) {
         g->suppress_char = 0;
         return;
@@ -2107,7 +2105,7 @@ void on_char(GLFWwindow *window, unsigned int u) {
     if (g->typing) {
         if (u >= 32 && u < 128) {
             char c = (char)u;
-            int n = strlen(g->typing_buffer);
+            size_t n = strlen(g->typing_buffer);
             if (n < MAX_TEXT_LENGTH - 1) {
                 g->typing_buffer[n] = c;
                 g->typing_buffer[n + 1] = '\0';
@@ -2132,7 +2130,7 @@ void on_char(GLFWwindow *window, unsigned int u) {
     }
 }
 
-void on_scroll(GLFWwindow *window, double xdelta, double ydelta) {
+void on_scroll(GLFWwindow *, double, double ydelta) {
     static double ypos = 0;
     ypos += ydelta;
     if (ypos < -SCROLL_THRESHOLD) {
@@ -2491,10 +2489,10 @@ int main(int argc, char **argv) {
     load_png_texture("textures/inventory.png", 0);
 
     // LOAD SHADERS //
-    ShaderAttributes block_attrib = {0};
-    ShaderAttributes line_attrib = {0};
-    ShaderAttributes text_attrib = {0};
-    ShaderAttributes sky_attrib = {0};
+    ShaderAttributes block_attrib = ShaderAttributes();
+    ShaderAttributes line_attrib = ShaderAttributes();
+    ShaderAttributes text_attrib = ShaderAttributes();
+    ShaderAttributes sky_attrib = ShaderAttributes();
     GLuint program;
 
     program = load_program(

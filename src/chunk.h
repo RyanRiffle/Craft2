@@ -34,7 +34,7 @@ public:
     bool isVisible(float planes[6][4]) const;
     bool isValid() const;
     ChunkPosition getChunkPosition() const;
-    static void destroy(std::list<Chunk*> *chunks);
+    static void destroy(Chunk *chunk);
     static void destroyAll();
     
     static Chunk *getAllChunks();
@@ -59,6 +59,8 @@ public:
     int sign_faces;
     GLuint buffer;
     GLuint sign_buffer;
+    
+    Chunk &operator=(const Chunk &rs);
     
 private:
     Map map;

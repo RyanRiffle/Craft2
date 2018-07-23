@@ -37,6 +37,7 @@ typedef struct {
     unsigned int mask;
     unsigned int size;
     MapEntry *data;
+    int freed;
 } Map;
 
 void map_alloc(Map *map, int dx, int dy, int dz, int mask);

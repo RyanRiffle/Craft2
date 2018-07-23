@@ -2,7 +2,7 @@
 #include <string.h>
 #include "map.h"
 
-int hash_int(int key) {
+int hash_int(unsigned key) {
     key = ~key + (key << 15);
     key = key ^ (key >> 12);
     key = key + (key << 2);
@@ -26,13 +26,14 @@ void map_alloc(Map *map, int dx, int dy, int dz, int mask) {
     map->mask = mask;
     map->size = 0;
     map->data = (MapEntry *)calloc(map->mask + 1, sizeof(MapEntry));
+    map->freed = 0;
 }
 
 void map_free(Map *map) {
-    if (map->data == NULL)
+    if (map->freed)
         return;
     free(map->data);
-    map->data = NULL;
+    map->freed = 1;
 }
 
 void map_copy(Map *dst, Map *src) {
@@ -43,6 +44,7 @@ void map_copy(Map *dst, Map *src) {
     dst->size = src->size;
     dst->data = (MapEntry *)calloc(dst->mask + 1, sizeof(MapEntry));
     memcpy(dst->data, src->data, (dst->mask + 1) * sizeof(MapEntry));
+    dst->freed = src->freed;
 }
 
 int map_set(Map *map, int x, int y, int z, int w) {

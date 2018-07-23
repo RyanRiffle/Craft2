@@ -186,8 +186,8 @@ int char_width(char input) {
 
 int string_width(const char *input) {
     int result = 0;
-    int length = strlen(input);
-    for (int i = 0; i < length; i++) {
+    size_t length = strlen(input);
+    for (size_t i = 0; i < length; i++) {
         result += char_width(input[i]);
     }
     return result;

@@ -36,11 +36,11 @@ void create_world(int p, int q, world_func func, void *arg) {
             if (w == 1) {
                 if (SHOW_PLANTS) {
                     // grass
-                    if (simplex2(-x * 0.1, z * 0.1, 4, 0.8, 2) > 0.6) {
+                    if (simplex2(-x * 0.1f, z * 0.1f, 4, 0.8f, 2) > 0.6f) {
                         func(x, h, z, 17 * flag, arg);
                     }
                     // flowers
-                    if (simplex2(x * 0.05, -z * 0.05, 4, 0.8, 2) > 0.7) {
+                    if (simplex2(x * 0.05f, -z * 0.05f, 4, 0.8f, 2) > 0.7f) {
                         int w = 18 + simplex2(x * 0.1, z * 0.1, 4, 0.8, 2) * 7;
                         if (w > 23) {
                             w = 23;
@@ -55,7 +55,7 @@ void create_world(int p, int q, world_func func, void *arg) {
                 {
                     ok = 0;
                 }
-                if (ok && simplex2(x, z, 6, 0.5, 2) > 0.84) {
+                if (ok && simplex2(x, z, 6, 0.5f, 2) > 0.84f) {
                     for (int y = h + 3; y < h + 8; y++) {
                         for (int ox = -3; ox <= 3; ox++) {
                             for (int oz = -3; oz <= 3; oz++) {
@@ -76,7 +76,7 @@ void create_world(int p, int q, world_func func, void *arg) {
             if (SHOW_CLOUDS) {
                 for (int y = 64; y < 72; y++) {
                     if (simplex3(
-                        x * 0.01, y * 0.1, z * 0.01, 8, 0.5, 2) > 0.75)
+                        x * 0.01f, y * 0.1f, z * 0.01f, 8, 0.5f, 2) > 0.75f)
                     {
                         func(x, y, z, 16 * flag, arg);
                     }

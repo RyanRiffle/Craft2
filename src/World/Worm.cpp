@@ -41,7 +41,7 @@ void Worm::generate(int chunkX, int chunkZ, world_func func, void *arg)
     int currentY = (simplex3(x * 0.1f, y * 0.1f, z * 0.1f, 4, 0.5, 2) * 16);
     int currentZ = z + (simplex3(x * 0.1f, y * 0.1f, z * 0.1f, 4, 0.5, 2) * 16);
     for (int i = 0; i < SEGMENT_COUNT; i++) {
-        WormSegment segment;
+        //WormSegment segment;
         
         float val = simplex2(currentX * 0.01f, currentZ * 0.01f, 2, 0.5, 2);
         std::cout << val << std::endl;

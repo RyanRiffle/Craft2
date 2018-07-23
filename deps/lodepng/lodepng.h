@@ -30,6 +30,8 @@ freely, subject to the following restrictions:
 
 #define LODEPNG_NO_COMPILE_CPP 1
 
+#pragma 
+
 /*
 The following #defines are used to create code sections. They can be disabled
 to disable code sections, which can give faster compile time and smaller binary.

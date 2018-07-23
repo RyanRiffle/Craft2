@@ -56,8 +56,8 @@ void make_cube_faces(
     };
     float *d = data;
     float s = 0.0625;
-    float a = 0 + 1 / 2048.0;
-    float b = s - 1 / 2048.0;
+    float a = 0 + 1 / 2048.0f;
+    float b = s - 1 / 2048.0f;
     int faces[6] = {left, right, top, bottom, front, back};
     int tiles[6] = {wleft, wright, wtop, wbottom, wfront, wback};
     
@@ -90,7 +90,7 @@ void make_cube(
     float x, float y, float z, float n, int w)
 {
     int wleft, wright, wtop, wbottom, wfront, wback;
-    //try {
+    try {
         Block *block = GlobalBlockMap->at(w);
         wleft = block->textures()[static_cast<int>(BLOCKFACE_LEFT)];
         wright = block->textures()[static_cast<int>(BLOCKFACE_RIGHT)];
@@ -98,14 +98,14 @@ void make_cube(
         wbottom = block->textures()[static_cast<int>(BLOCKFACE_BOTTOM)];
         wfront = block->textures()[static_cast<int>(BLOCKFACE_FRONT)];
         wback = block->textures()[static_cast<int>(BLOCKFACE_BACK)];
-//    } catch(const std::out_of_range &err) {
-//        wleft = blocks[w][0];
-//        wright = blocks[w][1];
-//        wtop = blocks[w][2];
-//        wbottom = blocks[w][3];
-//        wfront = blocks[w][4];
-//        wback = blocks[w][5];
-//    }
+    } catch(const std::out_of_range &) {
+        wleft = blocks[w][0];
+        wright = blocks[w][1];
+        wtop = blocks[w][2];
+        wbottom = blocks[w][3];
+        wfront = blocks[w][4];
+        wback = blocks[w][5];
+    }
     
     //std::cout << "MC: " << wfront << ", " << wback << ", " << wtop << ", " << wbottom << ", " << wleft << ", " << wright <<  std::endl;
     
@@ -164,8 +164,8 @@ void make_slab_faces(
     };
     float *d = data;
     float s = 0.0625;
-    float a = 0 + 1 / 2048.0;
-    float b = s - 1 / 2048.0;
+    float a = 0 + 1 / 2048.0f;
+    float b = s - 1 / 2048.0f;
     int faces[6] = {left, right, top, bottom, front, back};
     int tiles[6] = {wleft, wright, wtop, wbottom, wfront, wback};
     
@@ -261,7 +261,7 @@ void make_plant(
         Block *plant = GlobalBlockMap->at(w);
         du = (plant->textures()[BLOCKFACE_LEFT] % 16) * s;
         dv = (plant->textures()[BLOCKFACE_LEFT] / 16) * s;
-    } catch (const std::out_of_range &err) {
+    } catch (const std::out_of_range &) {
         du = (plants[w] % 16) * s;
         dv = (plants[w] / 16) * s;
     }
@@ -434,7 +434,7 @@ void make_character_3d(
     float *d = data;
     float s = 0.0625;
     float pu = s / 5;
-    float pv = s / 2.5;
+    float pv = s / 2.5f;
     float u1 = pu;
     float v1 = pv;
     float u2 = s - pu;

@@ -17,7 +17,7 @@ Renderable::~Renderable()
     
 }
 
-int Renderable::render(ShaderAttributes *attrib)
+int Renderable::render(ShaderAttributes *)
 {
     return 0;
 }

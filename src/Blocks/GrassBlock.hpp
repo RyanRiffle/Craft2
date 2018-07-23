@@ -20,6 +20,7 @@ public:
     virtual int stackSize();
     virtual int blockId();
     virtual std::string blockName();
+    virtual bool onPlace();
 };
 
 #endif /* GrassBlock_hpp */

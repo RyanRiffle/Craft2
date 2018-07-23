@@ -39,13 +39,13 @@ int get_client_enabled() {
     return client_enabled;
 }
 
-int client_sendall(int sd, char *data, int length) {
+int client_sendall(int sd, char *data, ssize_t length) {
     if (!client_enabled) {
         return 0;
     }
     int count = 0;
     while (count < length) {
-        int n = send(sd, data + count, length, 0);
+        ssize_t n = send(sd, data + count, length, 0);
         if (n == -1) {
             return -1;
         }

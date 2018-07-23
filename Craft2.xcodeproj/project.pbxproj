@@ -191,6 +191,8 @@
 		943394152104375500746210 /* Renderable.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Renderable.cpp; path = src/Render/Renderable.cpp; sourceTree = "<group>"; };
 		943394162104375500746210 /* Renderable.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = Renderable.hpp; path = src/Render/Renderable.hpp; sourceTree = "<group>"; };
 		943394172104375500746210 /* ShaderAttributes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ShaderAttributes.hpp; path = src/Render/ShaderAttributes.hpp; sourceTree = "<group>"; };
+		9433941A2105D6CF00746210 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
+		9433941B2105D6F300746210 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		94836BEB20F841ED00BB11D9 /* Craft2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Craft2; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -214,39 +216,39 @@
 		94339363210431BA00746210 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				943393F82104368300746210 /* Assets */,
 				9433936D210431CF00746210 /* auth.c */,
-				9433937B210431D000746210 /* client.c */,
-				94339374210431CF00746210 /* db.c */,
-				9433936E210431CF00746210 /* map.c */,
-				9433936F210431CF00746210 /* ring.c */,
-				94339369210431CF00746210 /* sign.c */,
-				94339376210431CF00746210 /* world.c */,
-				94339368210431CF00746210 /* chunk.cpp */,
-				94339373210431CF00746210 /* cube.cpp */,
-				9433937A210431D000746210 /* item.cpp */,
-				94339371210431CF00746210 /* main.cpp */,
-				94339367210431CF00746210 /* matrix.cpp */,
-				94339379210431D000746210 /* time.cpp */,
-				94339375210431CF00746210 /* util.cpp */,
 				9433937E210431D000746210 /* auth.h */,
+				943393B12104364000746210 /* Blocks */,
+				94339368210431CF00746210 /* chunk.cpp */,
 				94339364210431CF00746210 /* chunk.h */,
+				9433937B210431D000746210 /* client.c */,
 				94339365210431CF00746210 /* client.h */,
 				94339372210431CF00746210 /* config.h */,
+				94339373210431CF00746210 /* cube.cpp */,
 				9433936B210431CF00746210 /* cube.h */,
+				94339374210431CF00746210 /* db.c */,
 				9433937F210431D000746210 /* db.h */,
 				9433936A210431CF00746210 /* global.h */,
+				9433937A210431D000746210 /* item.cpp */,
 				9433936C210431CF00746210 /* item.h */,
+				94339371210431CF00746210 /* main.cpp */,
+				9433936E210431CF00746210 /* map.c */,
 				9433937C210431D000746210 /* map.h */,
+				94339367210431CF00746210 /* matrix.cpp */,
 				94339378210431D000746210 /* matrix.h */,
-				94339370210431CF00746210 /* ring.h */,
-				94339366210431CF00746210 /* sign.h */,
-				9433937D210431D000746210 /* time.h */,
-				94339377210431D000746210 /* util.h */,
-				94339380210431D000746210 /* world.h */,
-				943393F82104368300746210 /* Assets */,
-				943393B12104364000746210 /* Blocks */,
 				943394122104374900746210 /* Render */,
+				9433936F210431CF00746210 /* ring.c */,
+				94339370210431CF00746210 /* ring.h */,
+				94339369210431CF00746210 /* sign.c */,
+				94339366210431CF00746210 /* sign.h */,
+				94339379210431D000746210 /* time.cpp */,
+				9433937D210431D000746210 /* time.h */,
+				94339375210431CF00746210 /* util.cpp */,
+				94339377210431D000746210 /* util.h */,
 				943394062104369300746210 /* World */,
+				94339376210431CF00746210 /* world.c */,
+				94339380210431D000746210 /* world.h */,
 			);
 			name = src;
 			sourceTree = "<group>";
@@ -421,6 +423,8 @@
 		94836BE220F841ED00BB11D9 = {
 			isa = PBXGroup;
 			children = (
+				9433941B2105D6F300746210 /* README.md */,
+				9433941A2105D6CF00746210 /* .gitignore */,
 				943393A12104334300746210 /* assets */,
 				943393A42104340100746210 /* deps */,
 				943393912104321D00746210 /* Frameworks */,
@@ -661,6 +665,7 @@
 		94836BF320F841ED00BB11D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_STATIC_ANALYZER_MODE = shallow;
 				CODE_SIGN_STYLE = Automatic;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -669,13 +674,20 @@
 					"/usr/local/Cellar/yaml-cpp/0.6.2/lib",
 					/usr/local/Cellar/assimp/4.1.0/lib,
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Debug;
 		};
 		94836BF420F841ED00BB11D9 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_STATIC_ANALYZER_MODE = shallow;
 				CODE_SIGN_STYLE = Automatic;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -684,7 +696,13 @@
 					"/usr/local/Cellar/yaml-cpp/0.6.2/lib",
 					/usr/local/Cellar/assimp/4.1.0/lib,
 				);
+				OTHER_CPLUSPLUSFLAGS = "$(OTHER_CFLAGS)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				RUN_CLANG_STATIC_ANALYZER = YES;
+				WARNING_CFLAGS = (
+					"-Wall",
+					"-Wextra",
+				);
 			};
 			name = Release;
 		};
