@@ -9,7 +9,7 @@ To use a minecraft texture pack, it must be past v1.8 where the game started spl
 texture atlas into individual images. The game creates an atlas at runtime. The texture pack
 needs to be unzipped and placed in the `/textures` folder. 
 
-
+![Screenshot](https://imgur.com/P6qvYb4)
 
 
 ## Craft (Origional Readme)
