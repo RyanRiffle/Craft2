@@ -38,3 +38,8 @@ float GlassBlock::hardness()
 {
     return 2.0f;
 }
+
+bool GlassBlock::isTransparent()
+{
+    return true;
+}

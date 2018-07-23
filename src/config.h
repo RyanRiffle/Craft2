@@ -48,6 +48,6 @@
 #define RENDER_SIGN_RADIUS 4
 #define DELETE_CHUNK_RADIUS 14
 #define CHUNK_SIZE 32
-#define COMMIT_INTERVAL 5
+#define COMMIT_INTERVAL 10
 
 #endif

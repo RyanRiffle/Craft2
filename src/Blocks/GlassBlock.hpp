@@ -21,6 +21,7 @@ public:
     virtual int blockId();
     virtual std::string blockName();
     virtual float hardness();
+    virtual bool isTransparent();
 };
 
 #endif /* GlassBlock_hpp */
