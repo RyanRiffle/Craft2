@@ -1398,11 +1398,11 @@ void set_block(int x, int y, int z, int w) {
         tmp = Chunk::findChunk(p-1, q);
         tmp->dirty(true);
     }
-    if (lx == 31) {
+    if (lx == CHUNK_SIZE - 1) {
         tmp = Chunk::findChunk(p+1, q);
         tmp->dirty(true);
     }
-    if (lz == 31) {
+    if (lz == CHUNK_SIZE - 1) {
         tmp = Chunk::findChunk(p, q+1);
         tmp->dirty(true);
     }
