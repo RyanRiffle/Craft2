@@ -1,9 +1,10 @@
 #include "config.h"
 #include "noise.h"
 #include "world.h"
+#include "item.h"
 
 void create_world(int p, int q, world_func func, void *arg) {
-    int pad = 1;
+    int pad = 0;
     for (int dx = -pad; dx < CHUNK_SIZE + pad; dx++) {
         for (int dz = -pad; dz < CHUNK_SIZE + pad; dz++) {
             int flag = 1;
@@ -26,18 +27,18 @@ void create_world(int p, int q, world_func func, void *arg) {
             for (int y = 0; y < h; y++) {
                 if (w * flag == 1) {
                     if (y == h - 1) {
-                        func(x, y, z, 1, arg);
+                        func(x, y, z, GRASS, arg);
                     } else {
-                        func(x, y, z, 7, arg);
+                        func(x, y, z, DIRT, arg);
                     }
                 } else
-                    func(x, y, z, w * flag, arg);
+                    func(x, y, z, SAND, arg);
             }
             if (w == 1) {
                 if (SHOW_PLANTS) {
                     // grass
                     if (simplex2(-x * 0.1f, z * 0.1f, 4, 0.8f, 2) > 0.6f) {
-                        func(x, h, z, 17 * flag, arg);
+                        func(x, h, z, 17, arg);
                     }
                     // flowers
                     if (simplex2(x * 0.05f, -z * 0.05f, 4, 0.8f, 2) > 0.7f) {
@@ -45,7 +46,7 @@ void create_world(int p, int q, world_func func, void *arg) {
                         if (w > 23) {
                             w = 23;
                         }
-                        func(x, h, z, w * flag, arg);
+                        func(x, h, z, w, arg);
                     }
                 }
                 // trees
@@ -78,7 +79,7 @@ void create_world(int p, int q, world_func func, void *arg) {
                     if (simplex3(
                         x * 0.01f, y * 0.1f, z * 0.01f, 8, 0.5f, 2) > 0.75f)
                     {
-                        func(x, y, z, 16 * flag, arg);
+                        func(x, y, z, 16, arg);
                     }
                 }
             }

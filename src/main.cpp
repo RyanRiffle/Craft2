@@ -483,6 +483,17 @@ int hit_test_face(Player *player, int *x, int *y, int *z, int *face) {
     return 0;
 }
 
+int get_block(int x, int y, int z) {
+    int p = chunked(x);
+    int q = chunked(z);
+    Chunk *chunk = Chunk::findChunk(p, q);
+    if (chunk) {
+        Map *map = chunk->getBlockMap();
+        return map_get(map, x, y, z);
+    }
+    return 0;
+}
+
 int collide(int height, float *x, float *y, float *z) {
     int result = 0;
     int p = chunked(*x);
@@ -500,7 +511,7 @@ int collide(int height, float *x, float *y, float *z) {
     float pz = *z - nz;
     float pad = 0.25;
     for (int dy = 0; dy < height; dy++) {
-        if (px < -pad && is_obstacle(map_get(map, nx - 1, ny - dy, nz))) {
+        if (px < -pad && is_obstacle(get_block(nx - 1, ny - dy, nz))) {
             bool isSlab = false;
             try {
                 Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
@@ -511,7 +522,7 @@ int collide(int height, float *x, float *y, float *z) {
             if (!isSlab)
                 *x = nx - pad;
         }
-        if (px > pad && is_obstacle(map_get(map, nx + 1, ny - dy, nz))) {
+        if (px > pad && is_obstacle(get_block(nx + 1, ny - dy, nz))) {
             bool isSlab = false;
             try {
                 Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
@@ -522,7 +533,7 @@ int collide(int height, float *x, float *y, float *z) {
             if (!isSlab)
                 *x = nx + pad;
         }
-        if (py < -pad && is_obstacle(map_get(map, nx, ny - dy - 1, nz))) {
+        if (py < -pad && is_obstacle(get_block(nx, ny - dy - 1, nz))) {
             bool isSlab = false;
             try {
                 Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
@@ -534,7 +545,7 @@ int collide(int height, float *x, float *y, float *z) {
                 *y = ny - pad;
             result = 1;
         }
-        if (py > pad && is_obstacle(map_get(map, nx, ny - dy + 1, nz))) {
+        if (py > pad && is_obstacle(get_block(nx, ny - dy + 1, nz))) {
             bool isSlab = false;
             try {
                 Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
@@ -546,7 +557,7 @@ int collide(int height, float *x, float *y, float *z) {
                 *y = ny + pad;
             result = 1;
         }
-        if (pz < -pad && is_obstacle(map_get(map, nx, ny - dy, nz - 1))) {
+        if (pz < -pad && is_obstacle(get_block(nx, ny - dy, nz - 1))) {
             bool isSlab = false;
             try {
                 Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
@@ -557,7 +568,7 @@ int collide(int height, float *x, float *y, float *z) {
             if (!isSlab)
                 *z = nz - pad;
         }
-        if (pz > pad && is_obstacle(map_get(map, nx, ny - dy, nz + 1))) {
+        if (pz > pad && is_obstacle(get_block(nx, ny - dy, nz + 1))) {
             bool isSlab = false;
             try {
                 Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
@@ -788,19 +799,12 @@ void compute_chunk(WorkerItem *item) {
                 int y = ey - oy;
                 int z = ez - oz;
                 int w = ew;
-                // TODO: this should be unnecessary
-                if (x  < 0 || y < 0 || z < 0 || ew < 0) {
-                    continue;
-                }
-                if (x >= XZ_SIZE || y >= Y_SIZE || z >= XZ_SIZE) {
-                    continue;
-                }
-                
+
                 // END TODO
                 try {
                     Block *block = GlobalBlockMap->at(w);
                     opaque[XYZ(x, y, z)] = !block->isTransparent();
-                } catch(std::out_of_range &e) {
+                } catch(std::out_of_range &) {
                     std::cout << "Found unknown block " << w << std::endl;
                     opaque[XYZ(x, y, z)] = !is_transparent(w);
                 }
@@ -1381,10 +1385,33 @@ void set_block(int x, int y, int z, int w) {
             if (dz && chunked(z + dz) == q) {
                 continue;
             }
-            _set_block(p + dx, q + dz, x, y, z, -w, 1);
         }
     }
     client_block(x, y, z, w);
+    
+    //local block positions
+    int lx = x - (p * CHUNK_SIZE);
+    int lz = z - (q * CHUNK_SIZE);
+    
+    Chunk *tmp;
+    if (lx == 0) {
+        tmp = Chunk::findChunk(p-1, q);
+        tmp->dirty(true);
+    }
+    if (lx == 31) {
+        tmp = Chunk::findChunk(p+1, q);
+        tmp->dirty(true);
+    }
+    if (lz == 31) {
+        tmp = Chunk::findChunk(p, q+1);
+        tmp->dirty(true);
+    }
+    if (lz == 0) {
+        tmp = Chunk::findChunk(p, q-1);
+        tmp->dirty(true);
+    }
+    
+    std::cout << lx << ", " << lz << std::endl;
 }
 
 void record_block(int x, int y, int z, int w) {
@@ -1393,17 +1420,6 @@ void record_block(int x, int y, int z, int w) {
     g->block0.y = y;
     g->block0.z = z;
     g->block0.w = w;
-}
-
-int get_block(int x, int y, int z) {
-    int p = chunked(x);
-    int q = chunked(z);
-    Chunk *chunk = Chunk::findChunk(p, q);
-    if (chunk) {
-        Map *map = chunk->getBlockMap();
-        return map_get(map, x, y, z);
-    }
-    return 0;
 }
 
 void builder_block(int x, int y, int z, int w) {

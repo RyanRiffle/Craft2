@@ -1,5 +1,6 @@
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 #include "map.h"
 
 int hash_int(unsigned key) {
@@ -48,6 +49,9 @@ void map_copy(Map *dst, Map *src) {
 }
 
 int map_set(Map *map, int x, int y, int z, int w) {
+    if (w < 0) {
+        printf("Less than 0");
+    }
     unsigned int index = hash(x, y, z) & map->mask;
     x -= map->dx;
     y -= map->dy;
