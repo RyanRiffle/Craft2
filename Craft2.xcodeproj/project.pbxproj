@@ -193,6 +193,7 @@
 		943394172104375500746210 /* ShaderAttributes.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; name = ShaderAttributes.hpp; path = src/Render/ShaderAttributes.hpp; sourceTree = "<group>"; };
 		9433941A2105D6CF00746210 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9433941B2105D6F300746210 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
+		9433941C210737A000746210 /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
 		94836BEB20F841ED00BB11D9 /* Craft2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Craft2; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -423,6 +424,7 @@
 		94836BE220F841ED00BB11D9 = {
 			isa = PBXGroup;
 			children = (
+				9433941C210737A000746210 /* Doxyfile */,
 				9433941B2105D6F300746210 /* README.md */,
 				9433941A2105D6CF00746210 /* .gitignore */,
 				943393A12104334300746210 /* assets */,

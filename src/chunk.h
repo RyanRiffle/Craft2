@@ -20,6 +20,15 @@ typedef struct {
     int z;
 } ChunkPosition;
 
+/**
+ * Class representing a chunk in the game.
+ *
+ * Currently this class is never instantiated on the heap. It is on the stack
+ * and the Chunk::initialize() and Chunk::destory() functions should be used
+ * to setup the chunk or remove all values respectively. Each instance of a
+ * chunk are stored in the extern g or global struct at (g->chunks). It is an
+ * array allowing up to MAX_CHUNKS which is specified in global.h.
+ */
 class Chunk : public Renderable {
 public:
     Chunk();

@@ -1370,6 +1370,16 @@ void _set_block(int p, int q, int x, int y, int z, int w, int dirty) {
     }
 }
 
+/*!
+ * @discussion Sets the block at global position to w.
+ * @param x The position of the block on the global X axis.
+ * @param y The position of the block on the global Y axis.
+ * @param z The position of the block on the global Z axis.
+ * @param w The block id to set at the position. This ID must
+ *          exist in the "GlobalBlockMap". If the block ID does
+ *          not exist, it will cause this function to add high
+ *          overhead for the c++ exceptions that will be thrown.
+ */
 void set_block(int x, int y, int z, int w) {
     int p = chunked(x);
     int q = chunked(z);
