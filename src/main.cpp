@@ -1322,6 +1322,78 @@ void set_sign(int x, int y, int z, int face, const char *text) {
     client_sign(x, y, z, face, text);
 }
 
+/**
+ * @brief Sets the light output of a block.
+ * @param chunkX The X position of the chunk containing the light
+ * @param chunkZ The Z position of the chunk containing the light
+ * @param x The x position of the block in global coordinates.
+ * @param y The y position of the block in global coordinates.
+ * @param z The z position of the block in global coordinates.
+ * @param lightLevel The intensity of the light (0-15)
+ *
+ * This function uses the lightLevel parameter to decide whether or not
+ * other chunks nearby should get recomputed. For instance if you are 10 blocks
+ * away from the chunk boundary and the light intensity is 15 which means the light
+ * will travel 15 blocks, therefore the chunk within that range should recompute
+ * to update lighting.
+ */
+void set_light(int chunkX, int chunkZ, int x, int y, int z, int lightLevel) {
+    Chunk *chunk = Chunk::findChunk(chunkX, chunkZ);
+    int prevLight = 0;
+    if (chunk) {
+        Map *map = chunk->getLightMap();
+        prevLight = map_get(map, x, y, z);
+        if (map_set(map, x, y, z, lightLevel)) {
+            chunk->dirty(true);
+            db_insert_light(chunkX, chunkZ, x, y, z, lightLevel);
+        }
+    }
+    else {
+        db_insert_light(chunkX, chunkZ, x, y, z, lightLevel);
+    }
+    
+    Chunk *tmp;
+    int lx = x - (chunkX * CHUNK_SIZE);
+    int lz = z - (chunkX * CHUNK_SIZE);
+    
+    if (prevLight > lightLevel)
+        lightLevel = prevLight;
+    
+    if (lx - lightLevel < 0) {
+        tmp = Chunk::findChunk(chunkX-1, chunkZ);
+        
+        if (tmp)
+            tmp->dirty(true);
+    }
+    if (lx + lightLevel > CHUNK_SIZE) {
+        tmp = Chunk::findChunk(chunkX+1, chunkZ);
+        
+        if (tmp)
+            tmp->dirty(true);
+    }
+    if (lz - lightLevel < 0) {
+        tmp = Chunk::findChunk(chunkX, chunkZ-1);
+        
+        if (tmp)
+            tmp->dirty(true);
+    }
+    if (lz + lightLevel > CHUNK_SIZE) {
+        tmp = Chunk::findChunk(chunkX, chunkZ+1);
+        
+        if (tmp)
+            tmp->dirty(true);
+    }
+}
+
+/**
+ * @brief Toggles the light at global coordinates between 0 (none) and 15 (max).
+ * @param x The global x coordinate of the block.
+ * @param y The global y coordinate of the block.
+ * @param z The global z coordinate of the block.
+ *
+ * This function calls the set_light() function to toggle the light level. For
+ * more information of how it works please check the description for it.
+ */
 void toggle_light(int x, int y, int z) {
     int p = chunked(x);
     int q = chunked(z);
@@ -1329,24 +1401,9 @@ void toggle_light(int x, int y, int z) {
     if (chunk) {
         Map *map = chunk->getLightMap();
         int w = map_get(map, x, y, z) ? 0 : 15;
-        map_set(map, x, y, z, w);
-        db_insert_light(p, q, x, y, z, w);
+        set_light(p, q, x, y, z, w);
         client_light(x, y, z, w);
         chunk->dirty(true);
-    }
-}
-
-void set_light(int p, int q, int x, int y, int z, int w) {
-    Chunk *chunk = Chunk::findChunk(p, q);
-    if (chunk) {
-        Map *map = chunk->getLightMap();
-        if (map_set(map, x, y, z, w)) {
-            chunk->dirty(true);
-            db_insert_light(p, q, x, y, z, w);
-        }
-    }
-    else {
-        db_insert_light(p, q, x, y, z, w);
     }
 }
 
