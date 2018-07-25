@@ -60,6 +60,7 @@
 		943394112104372F00746210 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 943394102104372F00746210 /* libcurl.tbd */; };
 		943394182104375500746210 /* Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943394132104375500746210 /* Drawing.cpp */; };
 		943394192104375500746210 /* Renderable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943394152104375500746210 /* Renderable.cpp */; };
+		94339427210885F200746210 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 94339423210885F200746210 /* sqlite3.c */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -194,6 +195,12 @@
 		9433941A2105D6CF00746210 /* .gitignore */ = {isa = PBXFileReference; lastKnownFileType = text; path = .gitignore; sourceTree = "<group>"; };
 		9433941B2105D6F300746210 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		9433941C210737A000746210 /* Doxyfile */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = Doxyfile; sourceTree = "<group>"; };
+		9433941D210742D100746210 /* libnbt++.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = "libnbt++.a"; path = "../../../../../usr/local/lib/libnbt++.a"; sourceTree = "<group>"; };
+		943394202107440300746210 /* libnbt++.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = "libnbt++.dylib"; path = "../../../../../usr/local/lib/libnbt++.dylib"; sourceTree = "<group>"; };
+		94339423210885F200746210 /* sqlite3.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = sqlite3.c; path = deps/sqlite/sqlite3.c; sourceTree = "<group>"; };
+		94339424210885F200746210 /* shell.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = shell.c; path = deps/sqlite/shell.c; sourceTree = "<group>"; };
+		94339425210885F200746210 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3ext.h; path = deps/sqlite/sqlite3ext.h; sourceTree = "<group>"; };
+		94339426210885F200746210 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = deps/sqlite/sqlite3.h; sourceTree = "<group>"; };
 		94836BEB20F841ED00BB11D9 /* Craft2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Craft2; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -257,6 +264,8 @@
 		943393912104321D00746210 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				943394202107440300746210 /* libnbt++.dylib */,
+				9433941D210742D100746210 /* libnbt++.a */,
 				943394102104372F00746210 /* libcurl.tbd */,
 				9433940E210436F400746210 /* libassimp.4.1.0.dylib */,
 				943393AB2104348100746210 /* OpenGL.framework */,
@@ -296,6 +305,7 @@
 		943393A42104340100746210 /* deps */ = {
 			isa = PBXGroup;
 			children = (
+				94339422210885E500746210 /* sqlite3 */,
 				9433940A210436B100746210 /* tinycthread */,
 				943393AD2104349700746210 /* lodepng */,
 				943393A52104340700746210 /* noise */,
@@ -421,6 +431,17 @@
 			name = Render;
 			sourceTree = "<group>";
 		};
+		94339422210885E500746210 /* sqlite3 */ = {
+			isa = PBXGroup;
+			children = (
+				94339424210885F200746210 /* shell.c */,
+				94339423210885F200746210 /* sqlite3.c */,
+				94339426210885F200746210 /* sqlite3.h */,
+				94339425210885F200746210 /* sqlite3ext.h */,
+			);
+			name = sqlite3;
+			sourceTree = "<group>";
+		};
 		94836BE220F841ED00BB11D9 = {
 			isa = PBXGroup;
 			children = (
@@ -531,6 +552,7 @@
 				94339389210431D000746210 /* db.c in Sources */,
 				943393F52104365C00746210 /* SandBlock.cpp in Sources */,
 				943394022104368C00746210 /* Model.cpp in Sources */,
+				94339427210885F200746210 /* sqlite3.c in Sources */,
 				943393F42104365C00746210 /* GlassBlock.cpp in Sources */,
 				94339385210431D000746210 /* map.c in Sources */,
 				943393F12104365C00746210 /* CloudBlock.cpp in Sources */,
