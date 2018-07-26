@@ -1356,6 +1356,10 @@ void set_light(int chunkX, int chunkZ, int x, int y, int z, int lightLevel) {
     int lx = x - (chunkX * CHUNK_SIZE);
     int lz = z - (chunkX * CHUNK_SIZE);
     
+    //This is so that when a light is removed or reduced, it will use the previous
+    //intensity of the light to decide on what chunks to recompute lighting
+    //for instead of the lower light level which might not reach the chunk
+    //boundary
     if (prevLight > lightLevel)
         lightLevel = prevLight;
     
