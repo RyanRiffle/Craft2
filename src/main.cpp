@@ -324,7 +324,8 @@ Player *player_crosshair(Player *player) {
  * @param maxy The maximum view distance
  * @return Returns true if the chunk would be visible, false otherwise.
  */
-bool chunk_visible(float planes[6][4], int p, int q, int miny, int maxy) {
+bool chunk_visible(float planes[6][4], int p, int q, int miny, int maxy)
+{
     int x = p * CHUNK_SIZE - 1;
     int z = q * CHUNK_SIZE - 1;
     int d = CHUNK_SIZE + 1;
@@ -363,24 +364,6 @@ bool chunk_visible(float planes[6][4], int p, int q, int miny, int maxy) {
         }
     }
     return true;
-}
-
-int highest_block(float x, float z) {
-    int result = -1;
-    int nx = roundf(x);
-    int nz = roundf(z);
-    int p = Chunk::chunked(x);
-    int q = Chunk::chunked(z);
-    Chunk *chunk = Chunk::findChunk(p, q);
-    if (chunk) {
-        Map *map = chunk->getBlockMap();
-        MAP_FOR_EACH(map, ex, ey, ez, ew) {
-            if (is_obstacle(ew) && ex == nx && ez == nz) {
-                result = MAX(result, ey);
-            }
-        } END_MAP_FOR_EACH;
-    }
-    return result;
 }
 
 int _hit_test(
@@ -523,76 +506,24 @@ int collide(int height, float *x, float *y, float *z) {
     float pad = 0.25;
     for (int dy = 0; dy < height; dy++) {
         if (px < -pad && is_obstacle(get_block(nx - 1, ny - dy, nz))) {
-            bool isSlab = false;
-            try {
-                Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
-                if (block->type() == Block::BLOCKTYPE_SLAB)
-                    isSlab = true;
-            } catch(std::out_of_range &err) {}
-            
-            if (!isSlab)
-                *x = nx - pad;
+            *x = nx - pad;
         }
         if (px > pad && is_obstacle(get_block(nx + 1, ny - dy, nz))) {
-            bool isSlab = false;
-            try {
-                Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
-                if (block->type() == Block::BLOCKTYPE_SLAB)
-                    isSlab = true;
-            } catch(std::out_of_range &err) {}
-            
-            if (!isSlab)
-                *x = nx + pad;
+            *x = nx + pad;
         }
         if (py < -pad && is_obstacle(get_block(nx, ny - dy - 1, nz))) {
-            bool isSlab = false;
-            try {
-                Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
-                if (block->type() == Block::BLOCKTYPE_SLAB)
-                    isSlab = true;
-            } catch(std::out_of_range &err) {}
-            
-            if (!isSlab)
-                *y = ny - pad;
-            else {
-                return 0;
-            }
-            
+            *y = ny - pad;
             result = 1;
         }
         if (py > pad && is_obstacle(get_block(nx, ny - dy + 1, nz))) {
-            bool isSlab = false;
-            try {
-                Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
-                if (block->type() == Block::BLOCKTYPE_SLAB)
-                    isSlab = true;
-            } catch(std::out_of_range &err) {}
-            
-            if (!isSlab)
-                *y = ny + pad;
+            *y = ny + pad;
             result = 1;
         }
         if (pz < -pad && is_obstacle(get_block(nx, ny - dy, nz - 1))) {
-            bool isSlab = false;
-            try {
-                Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
-                if (block->type() == Block::BLOCKTYPE_SLAB)
-                    isSlab = true;
-            } catch(std::out_of_range &err) {}
-            
-            if (!isSlab)
-                *z = nz - pad;
+            *z = nz - pad;
         }
         if (pz > pad && is_obstacle(get_block(nx, ny - dy, nz + 1))) {
-            bool isSlab = false;
-            try {
-                Block *block = GlobalBlockMap->at(map_get(map, nx - 1, ny - dy, nz));
-                if (block->type() == Block::BLOCKTYPE_SLAB)
-                    isSlab = true;
-            } catch(std::out_of_range &err) {}
-            
-            if (!isSlab)
-                *z = nz + pad;
+            *z = nz + pad;
         }
     }
     return result;
@@ -2468,7 +2399,7 @@ void handle_movement(double dt) {
         }
     }
     if (s->y < 0) {
-        s->y = highest_block(s->x, s->z) + 2;
+        s->y = Chunk::highest(s->x, s->z) + 2;
     }
 }
 
@@ -2487,7 +2418,7 @@ void parse_buffer(char *buffer) {
             s->x = ux; s->y = uy; s->z = uz; s->rx = urx; s->ry = ury;
             force_chunks(me);
             if (uy == 0) {
-                s->y = highest_block(s->x, s->z) + 2;
+                s->y = Chunk::highest(s->x, s->z) + 2;
             }
         }
         int bp, bq, bx, by, bz, bw;
@@ -2496,7 +2427,7 @@ void parse_buffer(char *buffer) {
         {
             _set_block(bp, bq, bx, by, bz, bw, 0);
             if (player_intersects_block(2, s->x, s->y, s->z, bx, by, bz)) {
-                s->y = highest_block(s->x, s->z) + 2;
+                s->y = Chunk::highest(s->x, s->z) + 2;
             }
         }
         if (sscanf(line, "L,%d,%d,%d,%d,%d,%d",
@@ -2787,7 +2718,7 @@ int main(int argc, char **argv) {
         force_chunks(me);
         g->prev_chunk_count = g->chunk_count;
         if (!loaded) {
-            s->y = highest_block(s->x, s->z) + 2;
+            s->y = Chunk::highest(s->x, s->z) + 2;
         }
 
         // BEGIN MAIN LOOP //

@@ -306,18 +306,14 @@ int Chunk::chunked(int x)
 int Chunk::highest(int x, int z)
 {
     int result = -1;
-    int nx = roundf(x);
-    int nz = roundf(z);
     int p = Chunk::chunked(x);
     int q = Chunk::chunked(z);
+    
+    int lx = x - (p * CHUNK_SIZE);
+    int lz = z - (q * CHUNK_SIZE);
     Chunk *chunk = Chunk::findChunk(p, q);
     if (chunk) {
-        Map *map = chunk->getBlockMap();
-        MAP_FOR_EACH(map, ex, ey, ez, ew) {
-            if (is_obstacle(ew) && ex == nx && ez == nz) {
-                result = MAX(result, ey);
-            }
-        } END_MAP_FOR_EACH;
+        return chunk->mHighest[XZ(lx, lz)];
     }
     return result;
 }
