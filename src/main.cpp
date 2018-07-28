@@ -2088,6 +2088,10 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
     int exclusive =
         glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
     if (action == GLFW_RELEASE) {
+        if (key == CRAFT_KEY_FORWARD) {
+            g->lastForwardKey = glfwGetTime();
+            g->running = false;
+        }
         return;
     }
     if (key == GLFW_KEY_O) {
@@ -2107,6 +2111,13 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
     if (action != GLFW_PRESS) {
         return;
     }
+    
+    if (key == CRAFT_KEY_FORWARD) {
+        if (glfwGetTime() - g->lastForwardKey < 0.3f) {
+            g->running = true;
+        }
+    }
+    
     if (key == GLFW_KEY_ESCAPE) {
         if (g->typing) {
             g->typing = 0;
@@ -2352,6 +2363,7 @@ void handle_movement(double dt) {
         float m = dt * 1.0;
         g->ortho = glfwGetKey(g->window, CRAFT_KEY_ORTHO) ? 64 : 0;
         g->fov = glfwGetKey(g->window, CRAFT_KEY_ZOOM) ? 15 : 90;
+        if (g->running) g->fov += 5;
         if (glfwGetKey(g->window, CRAFT_KEY_FORWARD)) sz--;
         if (glfwGetKey(g->window, CRAFT_KEY_BACKWARD)) sz++;
         if (glfwGetKey(g->window, CRAFT_KEY_LEFT)) sx--;
@@ -2373,7 +2385,8 @@ void handle_movement(double dt) {
             }
         }
     }
-    float speed = g->flying ? 20 : 5;
+    float speed = g->flying ? 20 : 4.8;
+    speed = g->running ? speed + (speed * 0.3f): speed;
     int estimate = roundf(sqrtf(
         powf(vx * speed, 2) +
         powf(vy * speed + ABS(dy) * 2, 2) +
@@ -2811,13 +2824,7 @@ int main(int argc, char **argv) {
             glEnable2D();
             if (SHOW_ITEM) {
                 render_item(&block_attrib);
-                //render_gui(&block_attrib);
             }
-            
-            //float *data = make_square(10, 10, 10, 10);
-            //GLuint buff = gen_faces(4, 1, data);
-            
-            
             
             
             glDisable2D();

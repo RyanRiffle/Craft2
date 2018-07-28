@@ -108,10 +108,12 @@ typedef struct {
     int observe1;
     int observe2;
     int flying;
+    bool running;
     int item_index;
     int scale;
     int ortho;
     float fov;
+    float lastForwardKey;
     int suppress_char;
     int mode;
     int mode_changed;
