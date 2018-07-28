@@ -61,6 +61,7 @@
 		943394182104375500746210 /* Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943394132104375500746210 /* Drawing.cpp */; };
 		943394192104375500746210 /* Renderable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943394152104375500746210 /* Renderable.cpp */; };
 		94339427210885F200746210 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 94339423210885F200746210 /* sqlite3.c */; };
+		9433942D2109D74300746210 /* TickManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9433942B2109D74300746210 /* TickManager.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -201,6 +202,8 @@
 		94339424210885F200746210 /* shell.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = shell.c; path = deps/sqlite/shell.c; sourceTree = "<group>"; };
 		94339425210885F200746210 /* sqlite3ext.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3ext.h; path = deps/sqlite/sqlite3ext.h; sourceTree = "<group>"; };
 		94339426210885F200746210 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = deps/sqlite/sqlite3.h; sourceTree = "<group>"; };
+		9433942B2109D74300746210 /* TickManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TickManager.cpp; path = src/Mechanics/TickManager.cpp; sourceTree = "<group>"; };
+		9433942C2109D74300746210 /* TickManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = TickManager.hpp; path = src/Mechanics/TickManager.hpp; sourceTree = "<group>"; };
 		94836BEB20F841ED00BB11D9 /* Craft2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Craft2; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
@@ -224,6 +227,7 @@
 		94339363210431BA00746210 /* src */ = {
 			isa = PBXGroup;
 			children = (
+				9433942A2109D68B00746210 /* Mechanics */,
 				943393F82104368300746210 /* Assets */,
 				9433936D210431CF00746210 /* auth.c */,
 				9433937E210431D000746210 /* auth.h */,
@@ -442,6 +446,15 @@
 			name = sqlite3;
 			sourceTree = "<group>";
 		};
+		9433942A2109D68B00746210 /* Mechanics */ = {
+			isa = PBXGroup;
+			children = (
+				9433942B2109D74300746210 /* TickManager.cpp */,
+				9433942C2109D74300746210 /* TickManager.hpp */,
+			);
+			name = Mechanics;
+			sourceTree = "<group>";
+		};
 		94836BE220F841ED00BB11D9 = {
 			isa = PBXGroup;
 			children = (
@@ -547,6 +560,7 @@
 				943393E92104365C00746210 /* LeavesBlock.cpp in Sources */,
 				943393F32104365C00746210 /* ChestBlock.cpp in Sources */,
 				943393E52104365C00746210 /* AirBlock.cpp in Sources */,
+				9433942D2109D74300746210 /* TickManager.cpp in Sources */,
 				943393E12104365C00746210 /* CobblestoneBlock.cpp in Sources */,
 				943393F02104365C00746210 /* WhiteFlowerPlant.cpp in Sources */,
 				94339389210431D000746210 /* db.c in Sources */,

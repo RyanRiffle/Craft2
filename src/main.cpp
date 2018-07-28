@@ -34,10 +34,6 @@ extern "C" {
 static GameModel model;
 GameModel *g;
 
-int chunked(float x) {
-    return floorf(roundf(x) / CHUNK_SIZE);
-}
-
 int get_scale_factor() {
     int window_width, window_height;
     int buffer_width, buffer_height;
@@ -373,8 +369,8 @@ int highest_block(float x, float z) {
     int result = -1;
     int nx = roundf(x);
     int nz = roundf(z);
-    int p = chunked(x);
-    int q = chunked(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
     Chunk *chunk = Chunk::findChunk(p, q);
     if (chunk) {
         Map *map = chunk->getBlockMap();
@@ -425,8 +421,8 @@ int hit_test(
 {
     int result = 0;
     float best = 0;
-    int p = chunked(x);
-    int q = chunked(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
     float vx, vy, vz;
     get_sight_vector(rx, ry, &vx, &vy, &vz);
     for (auto i = 0; i < g->chunk_count; i++) {
@@ -484,8 +480,8 @@ int hit_test_face(Player *player, int *x, int *y, int *z, int *face) {
 }
 
 int get_block(int x, int y, int z) {
-    int p = chunked(x);
-    int q = chunked(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
     Chunk *chunk = Chunk::findChunk(p, q);
     if (chunk) {
         Map *map = chunk->getBlockMap();
@@ -494,10 +490,25 @@ int get_block(int x, int y, int z) {
     return 0;
 }
 
+Block *get_block_class(int x, int y, int z)
+{
+    int chunkX = Chunk::chunked(x);
+    int chunkZ = Chunk::chunked(z);
+    Chunk *chunk = Chunk::findChunk(chunkX, chunkZ);
+    Block *block = nullptr;
+    if (chunk) {
+        try {
+            block = GlobalBlockMap->at(get_block(x, y, z));
+        } catch (std::out_of_range &) {}
+    }
+    
+    return block;
+}
+
 int collide(int height, float *x, float *y, float *z) {
     int result = 0;
-    int p = chunked(*x);
-    int q = chunked(*z);
+    int p = Chunk::chunked(*x);
+    int q = Chunk::chunked(*z);
     Chunk *chunk = Chunk::findChunk(p, q);
     if (!chunk) {
         return result;
@@ -543,6 +554,10 @@ int collide(int height, float *x, float *y, float *z) {
             
             if (!isSlab)
                 *y = ny - pad;
+            else {
+                return 0;
+            }
+            
             result = 1;
         }
         if (py > pad && is_obstacle(get_block(nx, ny - dy + 1, nz))) {
@@ -730,13 +745,6 @@ void occlusion(
     }
 }
 
-#define XZ_SIZE (CHUNK_SIZE * 3 + 2)
-#define XZ_LO (CHUNK_SIZE)
-#define XZ_HI (CHUNK_SIZE * 2 + 1)
-#define Y_SIZE 258
-#define XYZ(x, y, z) ((y) * XZ_SIZE * XZ_SIZE + (x) * XZ_SIZE + (z))
-#define XZ(x, z) ((x) * XZ_SIZE + (z))
-
 void light_fill(
     char *opaque, char *light,
     int x, int y, int z, int w, int force)
@@ -768,7 +776,7 @@ void light_fill(
 void compute_chunk(WorkerItem *item) {
     char *opaque = (char *)calloc(XZ_SIZE * XZ_SIZE * Y_SIZE, sizeof(char));
     char *light = (char *)calloc(XZ_SIZE * XZ_SIZE * Y_SIZE, sizeof(char));
-    char *highest = (char *)calloc(XZ_SIZE * XZ_SIZE, sizeof(char));
+    unsigned char *highest = (unsigned char *)calloc(XZ_SIZE * XZ_SIZE, sizeof(unsigned char));
 
     int ox = item->p * CHUNK_SIZE - CHUNK_SIZE - 1;
     int oy = -1;
@@ -809,8 +817,8 @@ void compute_chunk(WorkerItem *item) {
                     opaque[XYZ(x, y, z)] = !is_transparent(w);
                 }
                 
-                if (opaque[XYZ(x, y, z)]) {
-                    highest[XZ(x, z)] = MAX(highest[XZ(x, z)], y);
+                if (is_obstacle(w)) {
+                    highest[XZ(x, z)] = MAX(highest[XZ(x, z)], ey);
                 }
             } END_MAP_FOR_EACH;
         }
@@ -954,18 +962,19 @@ void compute_chunk(WorkerItem *item) {
 
     free(opaque);
     free(light);
-    free(highest);
 
     item->miny = miny;
     item->maxy = maxy;
     item->faces = faces;
     item->data = data;
+    item->highest = highest;
 }
 
 void generate_chunk(Chunk *chunk, WorkerItem *item) {
     chunk->setMinY(item->miny);
     chunk->setMaxY(item->maxy);
     chunk->faces = item->faces;
+    chunk->setHighest(item->highest);
     del_buffer(chunk->buffer);
     chunk->buffer = gen_faces(10, item->faces, item->data);
     gen_sign_buffer(chunk);
@@ -977,6 +986,8 @@ void gen_chunk_buffer(Chunk *chunk) {
     item->p = chunk->getChunkPosition().x;
     item->q = chunk->getChunkPosition().z;
     item->chunk = chunk;
+    item->chunk->clearWaitingChunks();
+    
     for (int dp = -1; dp <= 1; dp++) {
         for (int dq = -1; dq <= 1; dq++) {
             Chunk *other = chunk;
@@ -990,12 +1001,30 @@ void gen_chunk_buffer(Chunk *chunk) {
             else {
                 item->block_maps[dp + 1][dq + 1] = 0;
                 item->light_maps[dp + 1][dq + 1] = 0;
+                ChunkPosition chunkPos;
+                chunkPos.x = dp;
+                chunkPos.z = dq;
+                item->chunk->addWaitingForChunk(chunkPos);
             }
         }
     }
     compute_chunk(item);
     generate_chunk(chunk, item);
     chunk->dirty(false);
+    for (int x = -1; x < 1; x++) {
+        for (int z = -1; z < 1; z++) {
+            ChunkPosition pos = item->chunk->getChunkPosition();
+            Chunk *other = Chunk::findChunk(pos.x + x, pos.z + z);
+            
+            if (!other) {
+                continue;
+            }
+            
+            if (other->isWaitingForChunk(pos)) {
+                other->dirty(true);
+            }
+        }
+    }
 }
 
 void map_set_func(int x, int y, int z, int w, void *arg) {
@@ -1042,8 +1071,8 @@ void delete_chunks() {
         int del = 1;
         for (int j = 0; j < 3; j++) {
             State *s = states[j];
-            int p = chunked(s->x);
-            int q = chunked(s->z);
+            int p = Chunk::chunked(s->x);
+            int q = Chunk::chunked(s->z);
             if (chunk->distanceTo(p, q) < g->delete_radius) {
                 del = 0;
                 break;
@@ -1108,8 +1137,8 @@ void check_workers() {
  */
 void force_chunks(Player *player) {
     State *s = &player->state;
-    int p = chunked(s->x);
-    int q = chunked(s->z);
+    int p = Chunk::chunked(s->x);
+    int q = Chunk::chunked(s->z);
     int r = 1;
     for (int dp = -r; dp <= r; dp++) {
         for (int dq = -r; dq <= r; dq++) {
@@ -1151,8 +1180,8 @@ void ensure_chunks_worker(Player *player, Worker *worker) {
         s->x, s->y, s->z, s->rx, s->ry, g->fov, g->ortho, g->render_radius);
     float planes[6][4];
     frustum_planes(planes, g->render_radius, matrix);
-    int p = chunked(s->x);
-    int q = chunked(s->z);
+    int p = Chunk::chunked(s->x);
+    int q = Chunk::chunked(s->z);
     int r = g->create_radius;
     int start = 0x0fffffff;
     int best_score = start;
@@ -1266,8 +1295,8 @@ int worker_run(void *arg) {
 }
 
 void unset_sign(int x, int y, int z) {
-    int p = chunked(x);
-    int q = chunked(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
     Chunk *chunk = Chunk::findChunk(p, q);
     if (chunk) {
         SignList *signs = &chunk->signs;
@@ -1282,8 +1311,8 @@ void unset_sign(int x, int y, int z) {
 }
 
 void unset_sign_face(int x, int y, int z, int face) {
-    int p = chunked(x);
-    int q = chunked(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
     Chunk *chunk = Chunk::findChunk(p, q);
     if (chunk) {
         SignList *signs = &chunk->signs;
@@ -1316,8 +1345,8 @@ void _set_sign(
 }
 
 void set_sign(int x, int y, int z, int face, const char *text) {
-    int p = chunked(x);
-    int q = chunked(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
     _set_sign(p, q, x, y, z, face, text, 1);
     client_sign(x, y, z, face, text);
 }
@@ -1399,8 +1428,8 @@ void set_light(int chunkX, int chunkZ, int x, int y, int z, int lightLevel) {
  * more information of how it works please check the description for it.
  */
 void toggle_light(int x, int y, int z) {
-    int p = chunked(x);
-    int q = chunked(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
     Chunk *chunk = Chunk::findChunk(p, q);
     if (chunk) {
         Map *map = chunk->getLightMap();
@@ -1425,7 +1454,7 @@ void _set_block(int p, int q, int x, int y, int z, int w, int dirty) {
     else {
         db_insert_block(p, q, x, y, z, w);
     }
-    if (w == 0 && chunked(x) == p && chunked(z) == q) {
+    if (w == 0 && Chunk::chunked(x) == p && Chunk::chunked(z) == q) {
         unset_sign(x, y, z);
         set_light(p, q, x, y, z, 0);
     }
@@ -1442,18 +1471,18 @@ void _set_block(int p, int q, int x, int y, int z, int w, int dirty) {
  *          overhead for the c++ exceptions that will be thrown.
  */
 void set_block(int x, int y, int z, int w) {
-    int p = chunked(x);
-    int q = chunked(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
     _set_block(p, q, x, y, z, w, 1);
     for (int dx = -1; dx <= 1; dx++) {
         for (int dz = -1; dz <= 1; dz++) {
             if (dx == 0 && dz == 0) {
                 continue;
             }
-            if (dx && chunked(x + dx) == p) {
+            if (dx && Chunk::chunked(x + dx) == p) {
                 continue;
             }
-            if (dz && chunked(z + dz) == q) {
+            if (dz && Chunk::chunked(z + dz) == q) {
                 continue;
             }
         }
@@ -1481,8 +1510,6 @@ void set_block(int x, int y, int z, int w) {
         tmp = Chunk::findChunk(p, q-1);
         tmp->dirty(true);
     }
-    
-    std::cout << lx << ", " << lz << std::endl;
 }
 
 void record_block(int x, int y, int z, int w) {
@@ -1509,8 +1536,8 @@ int render_chunks(ShaderAttributes *attrib, Player *player) {
     int result = 0;
     State *s = &player->state;
     ensure_chunks(player);
-    int p = chunked(s->x);
-    int q = chunked(s->z);
+    int p = Chunk::chunked(s->x);
+    int q = Chunk::chunked(s->z);
     float light = get_daylight();
     float matrix[16];
     set_matrix_3d(
@@ -1545,8 +1572,8 @@ int render_chunks(ShaderAttributes *attrib, Player *player) {
 
 void render_signs(ShaderAttributes *attrib, Player *player) {
     State *s = &player->state;
-    int p = chunked(s->x);
-    int q = chunked(s->z);
+    int p = Chunk::chunked(s->x);
+    int q = Chunk::chunked(s->z);
     float matrix[16];
     set_matrix_3d(
         matrix, g->width, g->height,
@@ -1976,14 +2003,14 @@ void parse_command(const char *buffer, int forward) {
         snprintf(g->db_path, MAX_PATH_LENGTH, "%s", DB_PATH);
     }
     else if (sscanf(buffer, "/view %d", &radius) == 1) {
-        if (radius >= 1 && radius <= 24) {
+        if (radius >= 1 && radius <= 64) {
             g->create_radius = radius;
             g->render_radius = radius;
             g->delete_radius = radius + 4;
             g->prev_chunk_count = 0;
         }
         else {
-            add_message("Viewing distance must be between 1 and 24.");
+            add_message("Viewing distance must be between 1 and 64.");
         }
     }
     else if (strcmp(buffer, "/copy") == 0) {
@@ -2036,6 +2063,30 @@ void parse_command(const char *buffer, int forward) {
     }
     else if (sscanf(buffer, "/cylinder %d", &radius) == 1) {
         cylinder(&g->block0, &g->block1, radius, 0);
+    }
+    else if (sscanf(buffer, "/time add %d", &count)) {
+        g->tickManager.addTicks(count);
+    }
+    else if (sscanf(buffer, "/time set %d", &count)) {
+        unsigned ticks = g->tickManager.getTicks();
+        unsigned toAdd = 0;
+        
+        if (static_cast<unsigned>(count) < ticks) {
+            toAdd = (TICKS_PER_DAY - ticks) + count;
+        } else {
+            toAdd = count - ticks;
+        }
+        
+        g->tickManager.addTicks(toAdd);
+    }
+    else if (sscanf(buffer, "/time query day")) {
+        char *msg = new char[255];
+        snprintf(msg, 255, "day %d", g->tickManager.getDay());
+        add_message(msg);
+        delete[] msg;
+    }
+    else if (sscanf(buffer, "/fov %d", &count)) {
+        g->fov = count;
     }
     else if (forward) {
         client_talk(buffer);
@@ -2107,6 +2158,12 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
         glfwGetInputMode(window, GLFW_CURSOR) == GLFW_CURSOR_DISABLED;
     if (action == GLFW_RELEASE) {
         return;
+    }
+    if (key == GLFW_KEY_O) {
+        if (g->tickManager.isPaused())
+            g->tickManager.start();
+        else
+            g->tickManager.pause();
     }
     if (key == GLFW_KEY_BACKSPACE) {
         if (g->typing) {
@@ -2335,6 +2392,26 @@ void handle_mouse_input() {
     }
 }
 
+void tick_chunks(unsigned tickCount)
+{
+    float tick_start = glfwGetTime();
+    State *s = &g->players->state;
+    int x = Chunk::chunked(s->x);
+    int z = Chunk::chunked(s->z);
+    int radius = 4;
+    for (int p = x - radius; p < x + radius; p++) {
+        for (int q = z - radius; q < z + radius; q++) {
+            Chunk *chunk = Chunk::findChunk(p, q);
+            
+            if (chunk) {
+                chunk->onTick(tickCount);
+            }
+        }
+    }
+
+    //std::cout << "Ticking chunks took " << glfwGetTime() - tick_start << "seconds." << std::endl;
+}
+
 void handle_movement(double dt) {
     static float dy = 0;
     State *s = &g->players->state;
@@ -2343,7 +2420,7 @@ void handle_movement(double dt) {
     if (!g->typing) {
         float m = dt * 1.0;
         g->ortho = glfwGetKey(g->window, CRAFT_KEY_ORTHO) ? 64 : 0;
-        g->fov = glfwGetKey(g->window, CRAFT_KEY_ZOOM) ? 15 : 65;
+        g->fov = glfwGetKey(g->window, CRAFT_KEY_ZOOM) ? 15 : 90;
         if (glfwGetKey(g->window, CRAFT_KEY_FORWARD)) sz--;
         if (glfwGetKey(g->window, CRAFT_KEY_BACKWARD)) sz++;
         if (glfwGetKey(g->window, CRAFT_KEY_LEFT)) sx--;
@@ -2716,6 +2793,10 @@ int main(int argc, char **argv) {
         // BEGIN MAIN LOOP //
         glLineWidth(2 * g->scale);
         double previous = glfwGetTime();
+        g->tickManager.start();
+        
+        g->tickManager.addTickHandler(tick_chunks);
+        
         while (1) {
             // WINDOW SIZE AND SCALE //
             g->scale = get_scale_factor();
@@ -2822,10 +2903,10 @@ int main(int argc, char **argv) {
                 hour = hour ? hour : 12;
                 snprintf(
                     text_buffer, 1024,
-                    "(%d, %d) (%.2f, %.2f, %.2f) [%d, %d, %d] %d%cm %dfps",
-                    chunked(s->x), chunked(s->z), s->x, s->y, s->z,
+                    "(%d, %d) (%.2f, %.2f, %.2f) [%d, %d, %d] %d%cm day %d %dfps",
+                    Chunk::chunked(s->x), Chunk::chunked(s->z), s->x, s->y, s->z,
                      g->player_count, g->chunk_count,
-                    face_count * 2, hour, am_pm, fps.fps);
+                    face_count * 2, hour, am_pm, g->tickManager.getDay(), fps.fps);
                 render_text(&text_attrib, ALIGN_LEFT, tx, ty, text_size, text_buffer);
                 ty -= text_size * 2;
             }

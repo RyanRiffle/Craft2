@@ -17,6 +17,7 @@ extern "C" {
 #include <GLFW/glfw3.h>
 #include "config.h"
 #include "chunk.h"
+#include "Mechanics/TickManager.hpp"
 
 #define MAX_CHUNKS 8192
 #define MAX_PLAYERS 128
@@ -48,6 +49,7 @@ typedef struct {
     int faces;
     GLfloat *data;
     Chunk *chunk;
+    unsigned char *highest;
 } WorkerItem;
 
 typedef struct {
@@ -95,6 +97,7 @@ typedef struct {
     int delete_radius;
     int sign_radius;
     Player players[MAX_PLAYERS];
+    TickManager tickManager;
     int player_count;
     int typing;
     char typing_buffer[MAX_TEXT_LENGTH];

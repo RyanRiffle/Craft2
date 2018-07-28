@@ -15,6 +15,13 @@
 #include <vector>
 #include <list>
 
+#define XZ_SIZE (CHUNK_SIZE * 3 + 2)
+#define XZ_LO (CHUNK_SIZE)
+#define XZ_HI (CHUNK_SIZE * 2 + 1)
+#define Y_SIZE 258
+#define XYZ(x, y, z) ((y) * XZ_SIZE * XZ_SIZE + (x) * XZ_SIZE + (z))
+#define XZ(x, z) ((x) * XZ_SIZE + (z))
+
 typedef struct {
     int x;
     int z;
@@ -48,6 +55,9 @@ public:
     
     static Chunk *getAllChunks();
     static int bufferSize();
+    static int chunked(int x);
+    static int highest(int x, int z);
+    void setHighest(unsigned char *highest);
     
     virtual int render(ShaderAttributes *attrib) override;
     
@@ -63,14 +73,19 @@ public:
     bool hasSigns() const;
     int distanceTo(int chunkX, int chunkZ) const;
     
+    Chunk &operator=(const Chunk &rs);
+    
+    void onTick(unsigned tickCount);
+    bool isWaitingForChunk(ChunkPosition p);
+    void addWaitingForChunk(ChunkPosition p);
+    void clearWaitingChunks();
+    
+    
     SignList signs;
     int faces;
     int sign_faces;
     GLuint buffer;
     GLuint sign_buffer;
-    
-    Chunk &operator=(const Chunk &rs);
-    
 private:
     Map map;
     Map lights;
@@ -79,6 +94,8 @@ private:
     bool m_isSetup;
     bool m_isDirty;
     ChunkPosition m_chunkPosition;
+    std::vector<ChunkPosition> mWaitingForChunks;
+    unsigned char *mHighest;
 };
 
 #endif /* chunk_h */

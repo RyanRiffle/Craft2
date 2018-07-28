@@ -10,6 +10,10 @@
 #include "util.h"
 #include <map>
 #include <iostream>
+#include <cmath>
+#include "item.h"
+#include "client.h"
+#include "db.h"
 
 /*
  * ChunkMap is used to store chunks in a easier to lookup
@@ -29,7 +33,8 @@ static std::list<Chunk*> gAllChunks;
 Chunk::Chunk() :
     Renderable(),
     m_isSetup(false),
-    m_isDirty(false)
+    m_isDirty(false),
+    mHighest(NULL)
 {
     
 }
@@ -287,6 +292,72 @@ Chunk &Chunk::operator=(const Chunk &rs)
     
     return *this;
 }
+
+void Chunk::onTick(unsigned int tickCount)
+{
+    
+}
+
+int Chunk::chunked(int x)
+{
+    return floorf(roundf(x) / CHUNK_SIZE);
+}
+
+int Chunk::highest(int x, int z)
+{
+    int result = -1;
+    int nx = roundf(x);
+    int nz = roundf(z);
+    int p = Chunk::chunked(x);
+    int q = Chunk::chunked(z);
+    Chunk *chunk = Chunk::findChunk(p, q);
+    if (chunk) {
+        Map *map = chunk->getBlockMap();
+        MAP_FOR_EACH(map, ex, ey, ez, ew) {
+            if (is_obstacle(ew) && ex == nx && ez == nz) {
+                result = MAX(result, ey);
+            }
+        } END_MAP_FOR_EACH;
+    }
+    return result;
+}
+
+void Chunk::setHighest(unsigned char *highest)
+{
+    if (mHighest != NULL && highest != mHighest)
+        free(mHighest);
+    mHighest = highest;
+}
+
+void Chunk::addWaitingForChunk(ChunkPosition p)
+{
+    mWaitingForChunks.push_back(p);
+}
+
+
+bool Chunk::isWaitingForChunk(ChunkPosition p)
+{
+    for (auto it = mWaitingForChunks.begin(); it != mWaitingForChunks.end(); ++it) {
+        ChunkPosition a = *it;
+        
+        if (a.x == p.x && a.z == p.z) {
+            return true;
+        }
+    }
+    
+    return false;
+}
+
+void Chunk::clearWaitingChunks()
+{
+    mWaitingForChunks.clear();
+}
+
+
+
+
+
+
 
 
 

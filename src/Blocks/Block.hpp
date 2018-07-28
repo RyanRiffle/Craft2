@@ -13,6 +13,7 @@
 #include <vector>
 #include <map>
 #include <functional>
+#include "Renderable.hpp"
 
 typedef enum {
     BLOCKFACE_TOP = 0,
