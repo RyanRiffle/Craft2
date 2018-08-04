@@ -1631,12 +1631,12 @@ void render_item(ShaderAttributes *attrib)
     glUniform1f(attrib->timer, time_of_day());
     int w = items[g->item_index];
     if (is_plant(w)) {
-        GLuint buffer = gen_plant_buffer(2, 4, 0, 0.5, w);
+        GLuint buffer = gen_plant_buffer(0, 0, 0, 0.5, w);
         draw_plant(attrib, buffer);
         del_buffer(buffer);
     }
     else {
-        GLuint buffer = gen_cube_buffer(0, 0, 0, 0.5, w);
+        GLuint buffer = gen_cube_buffer(3.9, 3.2, 3, 0.18, w);
         draw_cube(attrib, buffer);
         del_buffer(buffer);
     }
@@ -1651,9 +1651,41 @@ void render_gui(ShaderAttributes *attrib)
     glUniform3f(attrib->camera, 0, 0, 5);
     glUniform1i(attrib->sampler, 0);
     glUniform1f(attrib->timer, time_of_day());
-    GLuint buffer = gen_plant_buffer(0, 0, 0, 0.5, 0);
+    GLuint buffer = gen_plant_buffer(0, 0, 0, 0.5, 1);
     draw_plant(attrib, buffer);
     del_buffer(buffer);
+}
+
+void render_inventory(ShaderAttributes *attrib, GLuint tex)
+{
+    int vPort[4];
+    glGetIntegerv(GL_VIEWPORT, vPort);
+    
+    int width = vPort[2];
+    int height = vPort[3];
+    
+    float invWidth = 500.0f;
+    float invHeight = 500.0f;
+    
+    invWidth += (invWidth * 0.75);
+    invHeight += (invHeight * 0.75);
+    
+    float startX = (width / 2) - (invWidth / 2);
+    float startY = (height / 2) - (invHeight / 2);
+    
+    glUseProgram(0);
+    glActiveTexture(GL_TEXTURE0);
+    glBindTexture(GL_TEXTURE_2D, tex);
+    glBegin(GL_TRIANGLES);
+        glTexCoord2f(0.0f, 0.3515625f);               glVertex2f(startX, startY);
+        glTexCoord2f(0.6875f, 0.3515625f); glVertex2f(startX + invWidth, startY);
+        glTexCoord2f(0.0f, 1.0f);                     glVertex2f(startX, startY + invHeight);
+    
+        glTexCoord2f(0.6875f, 0.3515625f); glVertex2f(startX + invWidth, startY);
+        glTexCoord2f(0.6875f, 1.0f);       glVertex2f(startX + invWidth, startY + invHeight);
+        glTexCoord2f(0.0f, 1.0f);                     glVertex2f(startX, startY + invHeight);
+    glEnd();
+    glBindTexture(GL_TEXTURE_2D, 1);
 }
 
 void render_text(
@@ -2092,6 +2124,13 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
             g->lastForwardKey = glfwGetTime();
             g->running = false;
         }
+        
+        if (key == GLFW_KEY_E) {
+            if (g->playerInventory.isOpen())
+                g->playerInventory.close();
+            else
+                g->playerInventory.open();
+        }
         return;
     }
     if (key == GLFW_KEY_O) {
@@ -2113,7 +2152,7 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
     }
     
     if (key == CRAFT_KEY_FORWARD) {
-        if (glfwGetTime() - g->lastForwardKey < 0.3f) {
+        if (glfwGetTime() - g->lastForwardKey < 0.15f) {
             g->running = true;
         }
     }
@@ -2182,7 +2221,8 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
         if (key == '0') {
             g->item_index = 9;
         }
-        if (key == CRAFT_KEY_ITEM_NEXT) {
+        /* TODO: Remove
+         if (key == CRAFT_KEY_ITEM_NEXT) {
             g->item_index = (g->item_index + 1) % item_count;
         }
         if (key == CRAFT_KEY_ITEM_PREV) {
@@ -2190,7 +2230,7 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
             if (g->item_index < 0) {
                 g->item_index = item_count - 1;
             }
-        }
+        }*/
         if (key == CRAFT_KEY_OBSERVE) {
             g->observe1 = (g->observe1 + 1) % g->player_count;
         }
@@ -2265,7 +2305,7 @@ void on_mouse_button(GLFWwindow *window, int button, int action, int mods) {
                 on_left_click();
             }
         }
-        else {
+        else if (!g->playerInventory.isOpen()){
             glfwSetInputMode(window, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
     }
@@ -2307,7 +2347,7 @@ void handle_mouse_input() {
     static double px = 0;
     static double py = 0;
     State *s = &g->players->state;
-    if (exclusive && (px || py)) {
+    if (exclusive && (px || py) && !g->playerInventory.isOpen()) {
         double mx, my;
         glfwGetCursorPos(g->window, &mx, &my);
         float m = 0.0025;
@@ -2359,7 +2399,7 @@ void handle_movement(double dt) {
     State *s = &g->players->state;
     int sz = 0;
     int sx = 0;
-    if (!g->typing) {
+    if (!g->typing && !g->playerInventory.isOpen()) {
         float m = dt * 1.0;
         g->ortho = glfwGetKey(g->window, CRAFT_KEY_ORTHO) ? 64 : 0;
         g->fov = glfwGetKey(g->window, CRAFT_KEY_ZOOM) ? 15 : 90;
@@ -2566,6 +2606,7 @@ int main(int argc, char **argv) {
     glEnable(GL_CULL_FACE);
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_BLEND);
+    glEnable(GL_TEXTURE_2D);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
     glLogicOp(GL_INVERT);
     glClearColor(0, 0, 0, 1);
@@ -2611,13 +2652,16 @@ int main(int argc, char **argv) {
     glBindTexture(GL_TEXTURE_2D, inventory);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-    load_png_texture("textures/inventory.png", 0);
+    load_png_texture("textures/texture_pack/assets/minecraft/textures/gui/container/inventory.png", 1);
+    
+    g->playerInventory.setTexture(inventory);
 
     // LOAD SHADERS //
     ShaderAttributes block_attrib = ShaderAttributes();
     ShaderAttributes line_attrib = ShaderAttributes();
     ShaderAttributes text_attrib = ShaderAttributes();
     ShaderAttributes sky_attrib = ShaderAttributes();
+    ShaderAttributes gui_attrib = ShaderAttributes();
     GLuint program;
 
     program = load_program(
@@ -2659,6 +2703,14 @@ int main(int argc, char **argv) {
     sky_attrib.matrix = glGetUniformLocation(program, "matrix");
     sky_attrib.sampler = glGetUniformLocation(program, "sampler");
     sky_attrib.timer = glGetUniformLocation(program, "timer");
+    
+    program = load_program(
+       "shaders/gui_vertex.glsl", "shaders/gui_fragment.glsl");
+    gui_attrib.program = program;
+    gui_attrib.position = glGetAttribLocation(program, "position");
+    gui_attrib.normal = glGetAttribLocation(program, "normal");
+    gui_attrib.uv = glGetAttribLocation(program, "uv");
+    gui_attrib.sampler = glGetAttribLocation(program, "sampler");
 
     // CHECK COMMAND LINE ARGUMENTS //
     if (argc == 2 || argc == 3) {
@@ -2818,14 +2870,17 @@ int main(int argc, char **argv) {
 
             // RENDER HUD //
             glClear(GL_DEPTH_BUFFER_BIT);
-            if (SHOW_CROSSHAIRS) {
+            if (SHOW_CROSSHAIRS && !g->playerInventory.isOpen()) {
                 render_crosshairs(&line_attrib);
             }
             glEnable2D();
+            
+            if (g->playerInventory.isOpen())
+                g->playerInventory.render(&gui_attrib);
+            
             if (SHOW_ITEM) {
                 render_item(&block_attrib);
             }
-            
             
             glDisable2D();
 

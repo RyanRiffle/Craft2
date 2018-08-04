@@ -33,7 +33,6 @@ char *load_file(const char *path) {
     FILE *file = fopen(path, "rb");
     if (!file) {
         fprintf(stderr, "fopen %s failed: %d %s\n", path, errno, strerror(errno));
-        exit(1);
     }
     fseek(file, 0, SEEK_END);
     long length = ftell(file);

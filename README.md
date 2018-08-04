@@ -1,4 +1,4 @@
-## Craft2
+![Logo](https://raw.githubusercontent.com/RyanRiffle/Craft2/master/textures/FoglemanCraftLogo.png)
 
 A little project tinkering with [fogleman/Craft](https://github.com/fogleman/Craft) for 
 performance, more features, and some C++.

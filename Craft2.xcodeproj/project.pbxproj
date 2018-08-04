@@ -62,9 +62,26 @@
 		943394192104375500746210 /* Renderable.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 943394152104375500746210 /* Renderable.cpp */; };
 		94339427210885F200746210 /* sqlite3.c in Sources */ = {isa = PBXBuildFile; fileRef = 94339423210885F200746210 /* sqlite3.c */; };
 		9433942D2109D74300746210 /* TickManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 9433942B2109D74300746210 /* TickManager.cpp */; };
+		9433945A211503C100746210 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339459211503C100746210 /* main.cpp */; };
+		9433945F2115040900746210 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 943393AB2104348100746210 /* OpenGL.framework */; };
+		943394602115041800746210 /* libglfw.3.2.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 943393942104322B00746210 /* libglfw.3.2.dylib */; };
+		943394622115042200746210 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 943394612115042200746210 /* GLUT.framework */; };
+		94339463211504F300746210 /* util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94339375210431CF00746210 /* util.cpp */; };
+		943394642115051800746210 /* lodepng.c in Sources */ = {isa = PBXBuildFile; fileRef = 943393AE210434A800746210 /* lodepng.c */; };
+		943394652115053600746210 /* libGLEW.2.1.0.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 943393922104321E00746210 /* libGLEW.2.1.0.dylib */; };
+		94F6F9502115650F00013EFD /* Inventory.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 94F6F94E2115650F00013EFD /* Inventory.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
+		94339455211503C100746210 /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
 		94836BE920F841ED00BB11D9 /* CopyFiles */ = {
 			isa = PBXCopyFilesBuildPhase;
 			buildActionMask = 2147483647;
@@ -204,10 +221,29 @@
 		94339426210885F200746210 /* sqlite3.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = sqlite3.h; path = deps/sqlite/sqlite3.h; sourceTree = "<group>"; };
 		9433942B2109D74300746210 /* TickManager.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = TickManager.cpp; path = src/Mechanics/TickManager.cpp; sourceTree = "<group>"; };
 		9433942C2109D74300746210 /* TickManager.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = TickManager.hpp; path = src/Mechanics/TickManager.hpp; sourceTree = "<group>"; };
+		9433944F210DAB9600746210 /* libRocketCore.1.3.0.0.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libRocketCore.1.3.0.0.dylib; path = ../../../../../usr/local/lib/libRocketCore.1.3.0.0.dylib; sourceTree = "<group>"; };
+		94339451210DF71700746210 /* gui_vertex.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gui_vertex.glsl; path = shaders/gui_vertex.glsl; sourceTree = "<group>"; };
+		94339452210DF71700746210 /* gui_fragment.glsl */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = gui_fragment.glsl; path = shaders/gui_fragment.glsl; sourceTree = "<group>"; };
+		94339457211503C100746210 /* UITest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = UITest; sourceTree = BUILT_PRODUCTS_DIR; };
+		94339459211503C100746210 /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		943394612115042200746210 /* GLUT.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLUT.framework; path = System/Library/Frameworks/GLUT.framework; sourceTree = SDKROOT; };
 		94836BEB20F841ED00BB11D9 /* Craft2 */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = Craft2; sourceTree = BUILT_PRODUCTS_DIR; };
+		94F6F94E2115650F00013EFD /* Inventory.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = Inventory.cpp; path = src/Mechanics/Inventory.cpp; sourceTree = "<group>"; };
+		94F6F94F2115650F00013EFD /* Inventory.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; name = Inventory.hpp; path = src/Mechanics/Inventory.hpp; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		94339454211503C100746210 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				943394652115053600746210 /* libGLEW.2.1.0.dylib in Frameworks */,
+				943394622115042200746210 /* GLUT.framework in Frameworks */,
+				943394602115041800746210 /* libglfw.3.2.dylib in Frameworks */,
+				9433945F2115040900746210 /* OpenGL.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		94836BE820F841ED00BB11D9 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -268,6 +304,8 @@
 		943393912104321D00746210 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				943394612115042200746210 /* GLUT.framework */,
+				9433944F210DAB9600746210 /* libRocketCore.1.3.0.0.dylib */,
 				943394202107440300746210 /* libnbt++.dylib */,
 				9433941D210742D100746210 /* libnbt++.a */,
 				943394102104372F00746210 /* libcurl.tbd */,
@@ -283,6 +321,8 @@
 		943393962104332300746210 /* shaders */ = {
 			isa = PBXGroup;
 			children = (
+				94339452210DF71700746210 /* gui_fragment.glsl */,
+				94339451210DF71700746210 /* gui_vertex.glsl */,
 				9433939D2104333700746210 /* block_fragment.glsl */,
 				943393992104333700746210 /* block_vertex.glsl */,
 				9433939B2104333700746210 /* line_fragment.glsl */,
@@ -451,8 +491,18 @@
 			children = (
 				9433942B2109D74300746210 /* TickManager.cpp */,
 				9433942C2109D74300746210 /* TickManager.hpp */,
+				94F6F94E2115650F00013EFD /* Inventory.cpp */,
+				94F6F94F2115650F00013EFD /* Inventory.hpp */,
 			);
 			name = Mechanics;
+			sourceTree = "<group>";
+		};
+		94339458211503C100746210 /* UITest */ = {
+			isa = PBXGroup;
+			children = (
+				94339459211503C100746210 /* main.cpp */,
+			);
+			path = UITest;
 			sourceTree = "<group>";
 		};
 		94836BE220F841ED00BB11D9 = {
@@ -463,6 +513,7 @@
 				9433941A2105D6CF00746210 /* .gitignore */,
 				943393A12104334300746210 /* assets */,
 				943393A42104340100746210 /* deps */,
+				94339458211503C100746210 /* UITest */,
 				943393912104321D00746210 /* Frameworks */,
 				94836BEC20F841ED00BB11D9 /* Products */,
 				943393962104332300746210 /* shaders */,
@@ -474,6 +525,7 @@
 			isa = PBXGroup;
 			children = (
 				94836BEB20F841ED00BB11D9 /* Craft2 */,
+				94339457211503C100746210 /* UITest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -481,6 +533,23 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		94339456211503C100746210 /* UITest */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9433945B211503C100746210 /* Build configuration list for PBXNativeTarget "UITest" */;
+			buildPhases = (
+				94339453211503C100746210 /* Sources */,
+				94339454211503C100746210 /* Frameworks */,
+				94339455211503C100746210 /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UITest;
+			productName = UITest;
+			productReference = 94339457211503C100746210 /* UITest */;
+			productType = "com.apple.product-type.tool";
+		};
 		94836BEA20F841ED00BB11D9 /* Craft2 */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 94836BF220F841ED00BB11D9 /* Build configuration list for PBXNativeTarget "Craft2" */;
@@ -507,6 +576,9 @@
 				LastUpgradeCheck = 0940;
 				ORGANIZATIONNAME = "Ryan Riffle";
 				TargetAttributes = {
+					94339456211503C100746210 = {
+						CreatedOnToolsVersion = 9.4.1;
+					};
 					94836BEA20F841ED00BB11D9 = {
 						CreatedOnToolsVersion = 9.4.1;
 					};
@@ -525,11 +597,22 @@
 			projectRoot = "";
 			targets = (
 				94836BEA20F841ED00BB11D9 /* Craft2 */,
+				94339456211503C100746210 /* UITest */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXSourcesBuildPhase section */
+		94339453211503C100746210 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9433945A211503C100746210 /* main.cpp in Sources */,
+				943394642115051800746210 /* lodepng.c in Sources */,
+				94339463211504F300746210 /* util.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		94836BE720F841ED00BB11D9 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -542,6 +625,7 @@
 				943393E82104365C00746210 /* PlanksBlock.cpp in Sources */,
 				9433938B210431D000746210 /* world.c in Sources */,
 				943393EA2104365C00746210 /* BlueFlowerPlant.cpp in Sources */,
+				94F6F9502115650F00013EFD /* Inventory.cpp in Sources */,
 				943393B0210434A800746210 /* lodepng.c in Sources */,
 				943393ED2104365C00746210 /* RedFlowerPlant.cpp in Sources */,
 				943393F62104365C00746210 /* GrassBlock.cpp in Sources */,
@@ -589,6 +673,32 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
+		9433945C211503C100746210 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw/3.2.1/lib,
+					/usr/local/Cellar/glew/2.1.0/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		9433945D211503C100746210 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_STYLE = Automatic;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/usr/local/Cellar/glfw/3.2.1/lib,
+					/usr/local/Cellar/glew/2.1.0/lib,
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
 		94836BF020F841ED00BB11D9 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -747,6 +857,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		9433945B211503C100746210 /* Build configuration list for PBXNativeTarget "UITest" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9433945C211503C100746210 /* Debug */,
+				9433945D211503C100746210 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		94836BE620F841ED00BB11D9 /* Build configuration list for PBXProject "Craft2" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

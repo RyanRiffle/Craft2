@@ -18,6 +18,7 @@ extern "C" {
 #include "config.h"
 #include "chunk.h"
 #include "Mechanics/TickManager.hpp"
+#include "Mechanics/Inventory.hpp"
 
 #define MAX_CHUNKS 8192
 #define MAX_PLAYERS 128
@@ -126,6 +127,7 @@ typedef struct {
     CBlock block1;
     CBlock copy0;
     CBlock copy1;
+    Inventory playerInventory;
 } GameModel;
 
 extern GameModel *g;
