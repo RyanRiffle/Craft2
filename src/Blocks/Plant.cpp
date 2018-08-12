@@ -42,3 +42,8 @@ bool Plant::isTransparent()
 {
     return true;
 }
+
+bool Plant::isPlant()
+{
+    return true;
+}

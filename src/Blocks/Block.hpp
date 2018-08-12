@@ -102,6 +102,8 @@ public:
      */
     virtual int blockId();
     
+    virtual int drops();
+    
     /**
      * The name of the block. e.g craft:grass_block
      */

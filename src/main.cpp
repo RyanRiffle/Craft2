@@ -1,4 +1,5 @@
 #include <GL/glew.h>
+#include <GLUT/glut.h>
 #include <GLFW/glfw3.h>
 #include <curl/curl.h>
 #include <math.h>
@@ -24,6 +25,7 @@
 #include "Blocks/InitBlocks.h"
 #include "Assets/TextureImporter.hpp"
 #include "Assets/Model.hpp"
+#include "text.hpp"
 
 extern "C" {
     #include "noise.h"
@@ -144,30 +146,12 @@ GLuint gen_player_buffer(float x, float y, float z, float rx, float ry) {
     return gen_faces(10, 6, data);
 }
 
-GLuint gen_text_buffer(float x, float y, float character_height, char *text) {
-    int length = static_cast<int>(strlen(text));
-    GLfloat *data = malloc_faces(4, length);
-    for (int i = 0; i < length; i++) {
-        make_character(data + i * 24, x, y,
-                       character_height / 2, character_height, text[i]);
-        x += character_height;
-    }
-    return gen_faces(4, length, data);
-}
-
 void draw_chunk(ShaderAttributes *attrib, Chunk *chunk) {
     draw_triangles_3d_ao(attrib, chunk->buffer, chunk->faces * 6);
 }
 
 void draw_item(ShaderAttributes *attrib, GLuint buffer, int count) {
     draw_triangles_3d_ao(attrib, buffer, count);
-}
-
-void draw_text(ShaderAttributes *attrib, GLuint buffer, size_t length) {
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    draw_triangles_2d(attrib, buffer, static_cast<int>(length) * 6);
-    glDisable(GL_BLEND);
 }
 
 void draw_signs(ShaderAttributes *attrib, Chunk *chunk) {
@@ -1595,29 +1579,36 @@ void render_wireframe(ShaderAttributes *attrib, Player *player) {
         s->x, s->y, s->z, s->rx, s->ry, g->fov, g->ortho, g->render_radius);
     int hx, hy, hz;
     int hw = hit_test(0, s->x, s->y, s->z, s->rx, s->ry, &hx, &hy, &hz);
-    if (is_obstacle(hw)) {
-        glUseProgram(attrib->program);
-        //glLineWidth(1);
-        glEnable(GL_COLOR_LOGIC_OP);
-        glUniformMatrix4fv(attrib->matrix, 1, GL_FALSE, matrix);
-        GLuint wireframe_buffer = gen_wireframe_buffer(hx, hy, hz, 0.51);
-        draw_lines(attrib, wireframe_buffer, 3, 24);
-        del_buffer(wireframe_buffer);
-        glDisable(GL_COLOR_LOGIC_OP);
-    }
+    glUseProgram(attrib->program);
+    glLineWidth(1);
+    //glEnable(GL_COLOR_LOGIC_OP);
+    glUniformMatrix4fv(attrib->matrix, 1, GL_FALSE, matrix);
+    GLuint wireframe_buffer = gen_wireframe_buffer(hx, hy, hz, 0.51);
+    draw_lines(attrib, wireframe_buffer, 3, 24);
+    del_buffer(wireframe_buffer);
+    glDisable(GL_COLOR_LOGIC_OP);
 }
 
 void render_crosshairs(ShaderAttributes *attrib) {
     float matrix[16];
     set_matrix_2d(matrix, g->width, g->height);
     glUseProgram(attrib->program);
-    //glLineWidth(2 * g->scale);
+    glLineWidth(2 * g->scale);
     glEnable(GL_COLOR_LOGIC_OP);
     glUniformMatrix4fv(attrib->matrix, 1, GL_FALSE, matrix);
     GLuint crosshair_buffer = gen_crosshair_buffer();
     draw_lines(attrib, crosshair_buffer, 2, 4);
     del_buffer(crosshair_buffer);
     glDisable(GL_COLOR_LOGIC_OP);
+}
+
+void print_matrix(float *matrix)
+{
+    std::cout << matrix[0] << " " << matrix[4] << " " << matrix[8] << " "  << matrix[12] << std::endl
+    << matrix[1] << " " << matrix[5] << " " << matrix[9] << " "  << matrix[13] << std::endl
+    << matrix[2] << " " << matrix[6] << " " << matrix[10] << " " << matrix[14] << std::endl
+    << matrix[3] << " " << matrix[7] << " " << matrix[11] << " " << matrix[15] << std::endl << std::endl;
+    
 }
 
 void render_item(ShaderAttributes *attrib)
@@ -1636,7 +1627,7 @@ void render_item(ShaderAttributes *attrib)
         del_buffer(buffer);
     }
     else {
-        GLuint buffer = gen_cube_buffer(3.9, 3.2, 3, 0.18, w);
+        GLuint buffer = gen_cube_buffer(1, 1, 0, 0.5, w);
         draw_cube(attrib, buffer);
         del_buffer(buffer);
     }
@@ -1656,52 +1647,76 @@ void render_gui(ShaderAttributes *attrib)
     del_buffer(buffer);
 }
 
-void render_inventory(ShaderAttributes *attrib, GLuint tex)
+// Convert this to a cube instead of this half breed thing
+// to ensure the origin is on 0.0 then use glRotate to rotate it for
+// the angle. Once this works, rework it to use glDisplayLists and
+// incorporate it into Mechanics/Inventory for usage when rendering
+// the inventory and hotbar
+void render_cube(GLuint tex)
 {
-    int vPort[4];
-    glGetIntegerv(GL_VIEWPORT, vPort);
-    
-    int width = vPort[2];
-    int height = vPort[3];
-    
-    float invWidth = 500.0f;
-    float invHeight = 500.0f;
-    
-    invWidth += (invWidth * 0.75);
-    invHeight += (invHeight * 0.75);
-    
-    float startX = (width / 2) - (invWidth / 2);
-    float startY = (height / 2) - (invHeight / 2);
+    float uvscale = 0.0625; //item width / atlas width (16 / 256)
+    int w = items[g->item_index];
+    //int tiles[6] = {wleft, wright, wtop, wbottom, wfront, wback};
+    int tiles[6];
+    try {
+        tiles[0] = GlobalBlockMap->at(w)->textures()[BLOCKFACE_LEFT];
+        tiles[1] = GlobalBlockMap->at(w)->textures()[BLOCKFACE_RIGHT];
+        tiles[2] = GlobalBlockMap->at(w)->textures()[BLOCKFACE_TOP];
+        tiles[3] = GlobalBlockMap->at(w)->textures()[BLOCKFACE_BOTTOM];
+        tiles[4] = GlobalBlockMap->at(w)->textures()[BLOCKFACE_FRONT];
+        tiles[5] = GlobalBlockMap->at(w)->textures()[BLOCKFACE_BACK];
+    } catch (std::out_of_range &) {
+        return;
+    }
     
     glUseProgram(0);
     glActiveTexture(GL_TEXTURE0);
     glBindTexture(GL_TEXTURE_2D, tex);
-    glBegin(GL_TRIANGLES);
-        glTexCoord2f(0.0f, 0.3515625f);               glVertex2f(startX, startY);
-        glTexCoord2f(0.6875f, 0.3515625f); glVertex2f(startX + invWidth, startY);
-        glTexCoord2f(0.0f, 1.0f);                     glVertex2f(startX, startY + invHeight);
+    glTranslatef((g->width / 2) + 91.52, (g->height / 2) - 46.72, 0.5f);
+    glScalef(23.0f, 23.0f, 0.0f);
+    glRotatef(-23, 1.0, 0.0, 0.0);
+    glRotatef(45, 0.0, 1.0, 0.0);
     
-        glTexCoord2f(0.6875f, 0.3515625f); glVertex2f(startX + invWidth, startY);
-        glTexCoord2f(0.6875f, 1.0f);       glVertex2f(startX + invWidth, startY + invHeight);
-        glTexCoord2f(0.0f, 1.0f);                     glVertex2f(startX, startY + invHeight);
+    float du;
+    float dv;
+    
+    glBegin(GL_TRIANGLES);
+    {
+        du = (tiles[1] % 16) * uvscale;
+        dv = (tiles[1] / 16) * uvscale;
+        //Right
+        glTexCoord2f(du, dv); glVertex3f(+1, -1, -1);
+        glTexCoord2f(du + uvscale, dv); glVertex3f(+1, -1, +1);
+        glTexCoord2f(du, dv + uvscale); glVertex3f(+1, +1, -1);
+
+        glTexCoord2f(du + uvscale, dv); glVertex3f(+1, -1, +1);
+        glTexCoord2f(du + uvscale, dv + uvscale); glVertex3f(+1, +1, +1);
+        glTexCoord2f(du, dv + uvscale); glVertex3f(+1, +1, -1);
+        
+        du = (tiles[2] % 16) * uvscale;
+        dv = (tiles[2] / 16) * uvscale;
+        //Top
+        glTexCoord2f(du, dv); glVertex3f(-1, +1, -1);
+        glTexCoord2f(du + uvscale, dv); glVertex3f(+1, +1, -1);
+        glTexCoord2f(du, dv + uvscale); glVertex3f(-1, +1, +1);
+        
+        glTexCoord2f(du, dv + uvscale); glVertex3f(-1, +1, +1);
+        glTexCoord2f(du + uvscale, dv); glVertex3f(+1, +1, -1);
+        glTexCoord2f(du + uvscale, dv + uvscale); glVertex3f(+1, +1, +1);
+        
+        du = (tiles[4] % 16) * uvscale;
+        dv = (tiles[4] / 16) * uvscale;
+        //Front
+        glTexCoord2f(du, dv); glVertex3f(-1, -1, -1);
+        glTexCoord2f(du + uvscale, dv); glVertex3f(+1, -1, -1);
+        glTexCoord2f(du, dv + uvscale); glVertex3f(-1, +1, -1);
+        
+        glTexCoord2f(du, dv + uvscale); glVertex3f(-1, +1, -1);
+        glTexCoord2f(du + uvscale, dv); glVertex3f(+1, -1, -1);
+        glTexCoord2f(du + uvscale, dv + uvscale); glVertex3f(+1, +1, -1);
+    }
     glEnd();
     glBindTexture(GL_TEXTURE_2D, 1);
-}
-
-void render_text(
-    ShaderAttributes *attrib, int justify, float x, float y, float n, char *text)
-{
-    float matrix[16];
-    set_matrix_2d(matrix, g->width, g->height);
-    glUseProgram(attrib->program);
-    glUniformMatrix4fv(attrib->matrix, 1, GL_FALSE, matrix);
-    glUniform1i(attrib->sampler, 1);
-    glUniform1i(attrib->extra1, 0);
-    size_t length = strlen(text);
-    x -= n * justify * (length - 1) / 2;
-    GLuint buffer = gen_text_buffer(x, y, n, text);
-    draw_text(attrib, buffer, length);
-    del_buffer(buffer);
 }
 
 void add_message(const char *text) {
@@ -2090,16 +2105,27 @@ void on_right_click() {
     State *s = &g->players->state;
     int hx, hy, hz;
     int hw = hit_test(1, s->x, s->y, s->z, s->rx, s->ry, &hx, &hy, &hz);
+    InventoryItem *i = g->playerInventory.getSelectedHotbarItem();
+    
+    if (i->block == 0)
+        return;
+    
     if (hy > 0 && hy < 256 && is_plant(hw)) {
         hw = hit_test(0, s->x, s->y, s->z, s->rx, s->ry, &hx, &hy, &hz);
-        set_block(hx, hy, hz, items[g->item_index]);
-        record_block(hx, hy, hz, items[g->item_index]);
+        set_block(hx, hy, hz, i->block);
+        record_block(hx, hy, hz, i->block);
+        i->count--;
     }
     if (hy > 0 && hy < 256 && is_obstacle(hw)) {
         if (!player_intersects_block(2, s->x, s->y, s->z, hx, hy, hz)) {
-            set_block(hx, hy, hz, items[g->item_index]);
-            record_block(hx, hy, hz, items[g->item_index]);
+            set_block(hx, hy, hz, i->block);
+            record_block(hx, hy, hz, i->block);
+            i->count--;
         }
+    }
+    
+    if (i->count == 0) {
+        i->block = 0;
     }
 }
 
@@ -2125,7 +2151,7 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
             g->running = false;
         }
         
-        if (key == GLFW_KEY_E) {
+        if (key == GLFW_KEY_E && !g->typing) {
             if (g->playerInventory.isOpen())
                 g->playerInventory.close();
             else
@@ -2216,7 +2242,7 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
             g->flying = !g->flying;
         }
         if (key >= '1' && key <= '9') {
-            g->item_index = key - '1';
+            g->playerInventory.setHotbarSelection(8 - (key - '1'));
         }
         if (key == '0') {
             g->item_index = 9;
@@ -2654,7 +2680,18 @@ int main(int argc, char **argv) {
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
     load_png_texture("textures/texture_pack/assets/minecraft/textures/gui/container/inventory.png", 1);
     
+    GLuint widgets;
+    glGenTextures(1, &widgets);
+    glActiveTexture(GL_TEXTURE5);
+    glBindTexture(GL_TEXTURE_2D, widgets);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    load_png_texture("textures/texture_pack/assets/minecraft/textures/gui/widgets.png", 1);
+    
+    
     g->playerInventory.setTexture(inventory);
+    g->playerInventory.setBlockTexture(texture);
+    g->playerInventory.setHotbarTexture(widgets);
 
     // LOAD SHADERS //
     ShaderAttributes block_attrib = ShaderAttributes();
@@ -2693,6 +2730,8 @@ int main(int argc, char **argv) {
     text_attrib.matrix = glGetUniformLocation(program, "matrix");
     text_attrib.sampler = glGetUniformLocation(program, "sampler");
     text_attrib.extra1 = glGetUniformLocation(program, "is_sign");
+    text_attrib.extra2 = glGetUniformLocation(program, "darken_background");
+    g->playerInventory.setTextShader(&text_attrib);
 
     program = load_program(
         "shaders/sky_vertex.glsl", "shaders/sky_fragment.glsl");
@@ -2763,6 +2802,9 @@ int main(int argc, char **argv) {
             client_version(1);
             login();
         }
+        
+        g->playerInventory.loadFromDatabase(0);
+        g->tickManager.loadFromDatabase();
 
         // LOCAL VARIABLES //
         reset_model();
@@ -2874,14 +2916,21 @@ int main(int argc, char **argv) {
                 render_crosshairs(&line_attrib);
             }
             glEnable2D();
+            glEnable(GL_BLEND);
+//            glDisable (GL_DEPTH_TEST);
             
             if (g->playerInventory.isOpen())
                 g->playerInventory.render(&gui_attrib);
             
+            g->playerInventory.renderHotbar();
+            
             if (SHOW_ITEM) {
-                render_item(&block_attrib);
+                //render_item(&block_attrib);
+//                render_cube(texture);
             }
             
+//            glEnable(GL_DEPTH_TEST);
+            glDisable(GL_BLEND);
             glDisable2D();
 
             // RENDER TEXT //
@@ -2980,6 +3029,7 @@ int main(int argc, char **argv) {
 
         // SHUTDOWN //
         db_save_state(s->x, s->y, s->z, s->rx, s->ry);
+        g->tickManager.save();
         db_close();
         db_disable();
         client_stop();

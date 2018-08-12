@@ -7,6 +7,7 @@
 //
 
 #include "Block.hpp"
+#include "global.h"
 #include <iostream>
 
 static BlockMap InternalBlockMap;
@@ -45,6 +46,11 @@ std::string Block::blockName()
 int Block::blockId()
 {
     return INT_MAX;
+}
+
+int Block::drops()
+{
+    return this->blockId();
 }
 
 int Block::stackSize()
@@ -105,6 +111,9 @@ bool Block::onPlace()
 bool Block::onDestroy()
 {
     std::cout << "Destroyed " << blockName() << " at (" << x << "," << y << "," << z << ")" << std::endl;
+    if (this->drops()) {
+        g->playerInventory.addItem(this->drops());
+    }
     return true;
 }
 

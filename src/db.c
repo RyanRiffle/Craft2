@@ -3,6 +3,7 @@
 #include "ring.h"
 #include "sqlite3.h"
 #include "tinycthread.h"
+#include <stdio.h>
 
 static int db_enabled = 0;
 
@@ -10,11 +11,15 @@ static sqlite3 *db;
 static sqlite3_stmt *insert_block_stmt;
 static sqlite3_stmt *insert_light_stmt;
 static sqlite3_stmt *insert_sign_stmt;
+static sqlite3_stmt *insert_inventory_stmt;
+static sqlite3_stmt *insert_environment_stmt;
 static sqlite3_stmt *delete_sign_stmt;
 static sqlite3_stmt *delete_signs_stmt;
 static sqlite3_stmt *load_blocks_stmt;
 static sqlite3_stmt *load_lights_stmt;
 static sqlite3_stmt *load_signs_stmt;
+static sqlite3_stmt *load_inventory_stmt;
+static sqlite3_stmt *load_environment_stmt;
 static sqlite3_stmt *get_key_stmt;
 static sqlite3_stmt *set_key_stmt;
 
@@ -86,11 +91,26 @@ int db_init(char *path) {
         "    face int not null,"
         "    text text not null"
         ");"
+        "create table if not exists inventory ("
+        "   userId int not null,"
+        "   x int not null,"
+        "   y int not null,"
+        "   block int not null,"
+        "   count int not null"
+        ");"
+        "create table if not exists environment ("
+        "   id int not null,"
+        "   ticks int not null,"
+        "   day int not null,"
+        "   weather int not null"
+        ");"
         "create unique index if not exists block_pqxyz_idx on block (p, q, x, y, z);"
         "create unique index if not exists light_pqxyz_idx on light (p, q, x, y, z);"
         "create unique index if not exists key_pq_idx on key (p, q);"
         "create unique index if not exists sign_xyzface_idx on sign (x, y, z, face);"
-        "create index if not exists sign_pq_idx on sign (p, q);";
+        "create index if not exists sign_pq_idx on sign (p, q);"
+        "create unique index if not exists inventory_idx on inventory (userId, x, y);"
+        "create unique index if not exists environment_idx on environment (id);";
     static const char *insert_block_query =
         "insert or replace into block (p, q, x, y, z, w) "
         "values (?, ?, ?, ?, ?, ?);";
@@ -100,6 +120,12 @@ int db_init(char *path) {
     static const char *insert_sign_query =
         "insert or replace into sign (p, q, x, y, z, face, text) "
         "values (?, ?, ?, ?, ?, ?, ?);";
+    static const char *insert_inventory_query =
+        "insert or replace into inventory (userId, x, y, block, count) "
+        "values (?, ?, ?, ?, ?);";
+    static const char *insert_environment_query =
+        "insert or replace into environment (id, ticks, day, weather) "
+        "values (?, ?, ?, ?);";
     static const char *delete_sign_query =
         "delete from sign where x = ? and y = ? and z = ? and face = ?;";
     static const char *delete_signs_query =
@@ -110,11 +136,16 @@ int db_init(char *path) {
         "select x, y, z, w from light where p = ? and q = ?;";
     static const char *load_signs_query =
         "select x, y, z, face, text from sign where p = ? and q = ?;";
+    static const char *load_inventory_query =
+        "select x, y, block, count from inventory where userId = ?;";
+    static const char *load_environment_query =
+        "select ticks, day, weather from environment;";
     static const char *get_key_query =
         "select key from key where p = ? and q = ?;";
     static const char *set_key_query =
         "insert or replace into key (p, q, key) "
         "values (?, ?, ?);";
+    
     int rc;
     rc = sqlite3_open(path, &db);
     if (rc) return rc;
@@ -130,6 +161,12 @@ int db_init(char *path) {
         db, insert_sign_query, -1, &insert_sign_stmt, NULL);
     if (rc) return rc;
     rc = sqlite3_prepare_v2(
+        db, insert_inventory_query, -1, &insert_inventory_stmt, NULL);
+    if (rc) return rc;
+    rc = sqlite3_prepare_v2(
+        db, insert_environment_query, -1, &insert_environment_stmt, NULL);
+    if (rc) return rc;
+    rc = sqlite3_prepare_v2(
         db, delete_sign_query, -1, &delete_sign_stmt, NULL);
     if (rc) return rc;
     rc = sqlite3_prepare_v2(
@@ -141,10 +178,15 @@ int db_init(char *path) {
     if (rc) return rc;
     rc = sqlite3_prepare_v2(db, load_signs_query, -1, &load_signs_stmt, NULL);
     if (rc) return rc;
+    rc = sqlite3_prepare_v2(db, load_inventory_query, -1, &load_inventory_stmt, NULL);
+    if (rc) return rc;
+    rc = sqlite3_prepare_v2(db, load_environment_query, -1, &load_environment_stmt, NULL);
+    if (rc) return rc;
     rc = sqlite3_prepare_v2(db, get_key_query, -1, &get_key_stmt, NULL);
     if (rc) return rc;
     rc = sqlite3_prepare_v2(db, set_key_query, -1, &set_key_stmt, NULL);
     if (rc) return rc;
+    
     sqlite3_exec(db, "begin;", NULL, NULL, NULL);
     db_worker_start();
     return 0;
@@ -541,3 +583,83 @@ int db_worker_run(void *arg) {
     }
     return 0;
 }
+
+void db_insert_inventory_item(int userId, int x, int y, int block, int count)
+{
+    if (!db_enabled) {
+        return;
+    }
+    
+    sqlite3_reset(insert_inventory_stmt);
+    sqlite3_bind_int(insert_inventory_stmt, 1, userId);
+    sqlite3_bind_int(insert_inventory_stmt, 2, x);
+    sqlite3_bind_int(insert_inventory_stmt, 3, y);
+    sqlite3_bind_int(insert_inventory_stmt, 4, block);
+    sqlite3_bind_int(insert_inventory_stmt, 5, count);
+    sqlite3_step(insert_inventory_stmt);
+}
+
+int db_load_inventory_item(int userId, int ix, int iy, int *x, int *y, int *block, int *count)
+{
+    if (!db_enabled) {
+        return 0;
+    }
+
+    static const char *query =
+    "select userId, x, y, block, count from inventory where userId = ? and x = ? and y = ?;";
+    int result = 0;
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db, query, -1, &stmt, NULL);
+    sqlite3_bind_int(stmt, 1, userId);
+    sqlite3_bind_int(stmt, 2, ix);
+    sqlite3_bind_int(stmt, 3, iy);
+    int val = sqlite3_step(stmt);
+    if (val == SQLITE_ROW) {
+        *x = sqlite3_column_int(stmt, 1);
+        *y = sqlite3_column_int(stmt, 2);
+        *block = sqlite3_column_int(stmt, 3);
+        *count = sqlite3_column_int(stmt, 4);
+        result = 1;
+    }
+    
+    sqlite3_finalize(stmt);
+    return result;
+}
+
+void db_save_environment_state(unsigned ticks, unsigned day, int weather)
+{
+    if (!db_enabled) {
+        return;
+    }
+    
+    sqlite3_reset(insert_environment_stmt);
+    sqlite3_bind_int(insert_environment_stmt, 1, 0);
+    sqlite3_bind_int(insert_environment_stmt, 2, ticks);
+    sqlite3_bind_int(insert_environment_stmt, 3, day);
+    sqlite3_bind_int(insert_environment_stmt, 4, weather);
+    sqlite3_step(insert_environment_stmt);
+}
+
+int db_load_enironment_state(unsigned *ticks, unsigned *day, int *weather)
+{
+    if (!db_enabled) {
+        return 0;
+    }
+    
+    int result = 0;
+    
+    static const char *query =
+    "select ticks, day, weather from environment;";
+    
+    sqlite3_stmt *stmt;
+    sqlite3_prepare_v2(db, query, -1, &stmt, NULL);
+    if (sqlite3_step(stmt) == SQLITE_ROW) {
+        *ticks = sqlite3_column_int(stmt, 0);
+        *day = sqlite3_column_int(stmt, 1);
+        *weather = sqlite3_column_int(stmt, 2);
+        result = 1;
+    }
+    
+    return result;
+}
+

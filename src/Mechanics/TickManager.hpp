@@ -25,6 +25,8 @@ public:
     void pause();
     void addTicks(unsigned tickCount);
     unsigned getTicks();
+    bool loadFromDatabase();
+    void save();
     
     bool isPaused();
     unsigned getDay();

@@ -20,6 +20,7 @@ public:
     virtual bool isObstacle();
     virtual bool isFlammable();
     virtual bool isTransparent();
+    virtual bool isPlant();
 };
 
 #endif /* PlantBlock_hpp */

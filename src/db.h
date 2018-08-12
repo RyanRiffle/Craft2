@@ -29,6 +29,10 @@ extern "C" {
     void db_insert_light(int p, int q, int x, int y, int z, int w);
     void db_insert_sign(
         int p, int q, int x, int y, int z, int face, const char *text);
+    void db_insert_inventory_item(int userId, int x, int y, int block, int count);
+    int db_load_inventory_item(int userId, int ix, int iy, int *x, int *y, int *block, int *count);
+    void db_save_environment_state(unsigned ticks, unsigned day, int weather);
+    int db_load_enironment_state(unsigned *ticks, unsigned *day, int *weather);
     void db_delete_sign(int x, int y, int z, int face);
     void db_delete_signs(int x, int y, int z);
     void db_delete_all_signs(void);

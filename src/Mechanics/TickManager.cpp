@@ -7,15 +7,16 @@
 //
 
 #include "TickManager.hpp"
+#include "db.h"
 #include <iostream>
 
 
 TickManager::TickManager() :
     mRunning(false),
+    mTicks(8000), //Start at 8 am
     mThreadCreated(false),
-    mStopping(false),
     mDays(0),
-    mTicks(8000) //Start at 8 am
+    mStopping(false)
 {
     
 }
@@ -104,6 +105,20 @@ void TickManager::addTickHandler(std::function<void (unsigned int)> handler)
 {
     mTickHandlers.push_back(handler);
 }
+
+bool TickManager::loadFromDatabase()
+{
+    int notImplemented = 0;
+    
+    return db_load_enironment_state(&mTicks, &mDays, &notImplemented);
+}
+
+void TickManager::save()
+{
+    db_save_environment_state(mTicks, mDays, 0);
+}
+
+
 
 
 

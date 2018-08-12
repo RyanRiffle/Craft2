@@ -5,7 +5,7 @@
 #define FULLSCREEN 0
 #define WINDOW_WIDTH 1024
 #define WINDOW_HEIGHT 768
-#define VSYNC 1
+#define VSYNC 0
 #define SCROLL_THRESHOLD 0.1
 #define MAX_MESSAGES 4
 #define DB_PATH "craft.db"
@@ -43,10 +43,10 @@
 #define CRAFT_KEY_SIGN '`'
 
 // advanced parameters
-#define CREATE_CHUNK_RADIUS 25
-#define RENDER_CHUNK_RADIUS 24
+#define CREATE_CHUNK_RADIUS 13
+#define RENDER_CHUNK_RADIUS 12
 #define RENDER_SIGN_RADIUS 4
-#define DELETE_CHUNK_RADIUS 28
+#define DELETE_CHUNK_RADIUS 16
 #define CHUNK_SIZE 16
 #define COMMIT_INTERVAL 10
 

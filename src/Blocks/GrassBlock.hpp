@@ -21,6 +21,7 @@ public:
     virtual int blockId();
     virtual std::string blockName();
     virtual bool onPlace();
+    virtual int drops();
 };
 
 #endif /* GrassBlock_hpp */

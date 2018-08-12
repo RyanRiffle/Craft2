@@ -7,6 +7,7 @@
 //
 
 #include "GrassBlock.hpp"
+#include "item.h"
 
 GrassBlock::GrassBlock()
 {
@@ -27,6 +28,11 @@ GrassBlock::~GrassBlock()
 int GrassBlock::blockId()
 {
     return 1;
+}
+
+int GrassBlock::drops()
+{
+    return DIRT;
 }
 
 std::string GrassBlock::blockName()

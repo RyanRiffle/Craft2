@@ -3,14 +3,27 @@
 A little project tinkering with [fogleman/Craft](https://github.com/fogleman/Craft) for 
 performance, more features, and some C++.
 
+![Screenshot](https://i.imgur.com/qpkIO4Y.jpg)
+
 ### Features Added
 #### Import Minecraft texture packs
 To use a minecraft texture pack, it must be past v1.8 where the game started splitting the
 texture atlas into individual images. The game creates an atlas at runtime. The texture pack
 needs to be unzipped and placed in the `/textures` folder. 
 
-![Screenshot](https://i.imgur.com/P6qvYb4.jpg)
+![Inventory Screenshot](https://i.imgur.com/nA5Y1w2.jpg)
 
+#### Inventory
+* Inventory and hotbar rendering
+* Saves to database
+* UX for inventory not implemented yet
+
+#### Ticks
+Game ticks were added the way they are in minecraft.
+* 24000 ticks per day
+* Time of day is correlated to the tick count.
+* Tick count resets at 24000 back to 0 and the day number is incremented.
+* Saves current time, day to database
 
 ## Craft (Origional Readme)
 

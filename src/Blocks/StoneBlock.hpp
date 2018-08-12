@@ -23,6 +23,7 @@ public:
     virtual float hardness();
     virtual Block::BlockType type();
     virtual bool isTransparent();
+    virtual int drops();
 };
 
 #endif /* StoneBlock_hpp */

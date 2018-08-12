@@ -7,6 +7,7 @@
 //
 
 #include "StoneBlock.hpp"
+#include "item.h"
 
 StoneBlock::StoneBlock() :
     Block()
@@ -47,4 +48,9 @@ Block::BlockType StoneBlock::type()
 bool StoneBlock::isTransparent()
 {
     return true;
+}
+
+int StoneBlock::drops()
+{
+    return COBBLE;
 }

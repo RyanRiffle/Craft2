@@ -9,7 +9,9 @@
 #ifndef Inventory_hpp
 #define Inventory_hpp
 
+#ifdef __cplusplus
 #include "../Render/Renderable.hpp"
+#endif
 
 struct InventoryItem
 {
@@ -17,6 +19,7 @@ struct InventoryItem
     int count;
 };
 
+#ifdef __cplusplus
 class Inventory : public Renderable
 {
 public:
@@ -26,8 +29,18 @@ public:
     bool isOpen();
     void open();
     void close();
+    bool loadFromDatabase(int userId);
     void setTexture(unsigned texture);
+    void setBlockTexture(unsigned texture);
+    void setHotbarTexture(unsigned texture);
+    void setTextShader(ShaderAttributes *shader);
+    
+    void setHotbarSelection(int index);
+    
+    bool addItem(int block, int count = 1);
+    InventoryItem *getSelectedHotbarItem();
 
+    void renderHotbar();
     virtual int render(ShaderAttributes *attrib);
     
 protected:
@@ -36,13 +49,17 @@ protected:
     
 private:
     bool mIsOpen;
+    int mHotbarSelection;
     unsigned mTexture;
+    unsigned mBlockTexture;
+    unsigned mHotbarTexture;
     float mScale;
+    float mVerticalScale;
     int mSlotsTaken;
-    float mInventoryPosLeft;
-    float mInventoryPosTop;
-    int mScreenHeight;
-    InventoryItem mItems[4][9];
+    InventoryItem mItems[9][4];
+    InventoryItem *mCrafting[3][3];
+    ShaderAttributes *mTextShader;
 };
+#endif
 
 #endif /* Inventory_hpp */
