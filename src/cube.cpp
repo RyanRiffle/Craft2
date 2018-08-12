@@ -354,8 +354,8 @@ void make_character(
     float *d = data;
     float s = 0.0625;
     float a = s;
-    float b = s * 2;
-    int w = c - 32;
+    float b = s;
+    int w = c;
     float du = (w % 16) * a;
     float dv = 1 - (w / 16) * b - b;
     *(d++) = x - width; *(d++) = y - height;

@@ -128,6 +128,7 @@ typedef struct {
     CBlock copy0;
     CBlock copy1;
     Inventory playerInventory;
+    bool debugVisible;
 } GameModel;
 
 extern GameModel *g;

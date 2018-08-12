@@ -2165,6 +2165,11 @@ void on_key(GLFWwindow *window, int key, int, int action, int mods) {
         else
             g->tickManager.pause();
     }
+    
+    if (key == GLFW_KEY_F3) {
+        g->debugVisible = !g->debugVisible;
+    }
+    
     if (key == GLFW_KEY_BACKSPACE) {
         if (g->typing) {
             size_t n = strlen(g->typing_buffer);
@@ -2594,6 +2599,7 @@ void reset_model() {
     g->day_length = DAY_LENGTH;
     glfwSetTime(g->day_length / 3.0);
     g->time_changed = 1;
+    g->debugVisible = false;
 }
 
 int main(int argc, char **argv) {
@@ -2652,7 +2658,7 @@ int main(int argc, char **argv) {
     glBindTexture(GL_TEXTURE_2D, font);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-    load_png_texture("textures/font.png", 1);
+    load_png_texture("textures/texture_pack/assets/minecraft/textures/font/ascii.png", 1);
 
     GLuint sky;
     glGenTextures(1, &sky);
@@ -2935,10 +2941,10 @@ int main(int argc, char **argv) {
 
             // RENDER TEXT //
             char text_buffer[1024];
-            float text_size = 12 * g->scale;
+            float text_size = 10 * g->scale;
             float tx = text_size / 2;
             float ty = g->height - text_size;
-            if (SHOW_INFO_TEXT) {
+            if (g->debugVisible) {
                 int hour = time_of_day() * 24;
                 char am_pm = hour < 12 ? 'a' : 'p';
                 hour = hour % 12;
